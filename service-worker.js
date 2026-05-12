@@ -1,7 +1,7 @@
 const CACHE_NAME = 'panel-turnos-v1';
 
 const PRECACHE_URLS = [
-  '/panel-turnos.html',
+  '/index.html',
   '/manifest.json',
   // Google Fonts
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@500;600;700&display=swap',
@@ -84,7 +84,7 @@ self.addEventListener('fetch', event => {
           }
           // Último recurso: si es navegación, devolver el HTML principal
           if (event.request.mode === 'navigate') {
-            return caches.match('/panel-turnos.html');
+            return caches.match('/index.html');
           }
           // Sin cache disponible
           return new Response('Sin conexión y sin cache disponible.', {
