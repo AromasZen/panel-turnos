@@ -1,7 +1,7 @@
 {
   "name": "Panel de Turnos",
   "short_name": "Turnos",
-  "start_url": "/panel-turnos.html",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#F0F4F8",
   "theme_color": "#2C5282",
