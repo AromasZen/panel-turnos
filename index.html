@@ -915,7 +915,7 @@
         }
 
         /* =============================================
-       DÍAS BLOQUEADOS
+       DÍAS BLOQUEADOS Y SIN DISPONIBILIDAD
     ============================================= */
         .cal-day.blocked {
             background: #FFF1F2;
@@ -926,6 +926,18 @@
             border-color: #DC2626;
         }
         .cal-day.blocked .day-num {
+            color: #DC2626;
+        }
+        /* Día completamente lleno (todos los slots ocupados) */
+        .cal-day.full {
+            background: #FFF1F2;
+            border-color: rgba(220, 38, 38, 0.3);
+        }
+        .cal-day.full:hover {
+            background: #FFE4E6;
+            border-color: #DC2626;
+        }
+        .cal-day.full .day-num {
             color: #DC2626;
         }
         .blocked-icon {
@@ -1774,8 +1786,22 @@
         let selectedDate = null; // 'YYYY-MM-DD'
         let currentReserva = null; // turno abierto en modal
         let allBloques = [];       // bloqueos del mes cargado
+        let allHorarios = [];      // horarios de la empresa
         let blFechaPickerInstance = null; // flatpickr del modal bloqueos
         let currentProfile = null; // perfil completo del usuario logueado
+
+        // ==========================================================
+        // FETCH HORARIOS
+        // ==========================================================
+        async function fetchHorarios() {
+            const { data, error } = await db
+                .from('aahorarios')
+                .select('*')
+                .eq('empresa_id', EMPRESA_ID)
+                .order('hora', { ascending: true });
+
+            if (!error) allHorarios = data || [];
+        }
 
         // ==========================================================
         // FETCH BLOQUEOS
@@ -1820,6 +1846,7 @@
                 return;
             }
             allReservas = data || [];
+            await fetchHorarios();
             await fetchBloques();
             renderCalendar();
             updateStats();
@@ -1880,10 +1907,17 @@
 
                 // Verificar si el día completo está bloqueado
                 const isDayBlocked = allBloques.some(b => b.fecha === dateStr && !b.hora);
-                cell.className = `cal-day${isToday ? ' today' : ''}${isSelected ? ' selected' : ''}${dayReservas.length ? ' has-events' : ''}${isDayBlocked ? ' blocked' : ''}`;
+
+                // Verificar si todos los slots del día están ocupados (sin disponibilidad)
+                const nonCancelledCount = dayReservas.filter(r => r.estado !== 'Cancelado').length;
+                const totalSlots = allHorarios.length;
+                const isFullyOccupied = !isDayBlocked && totalSlots > 0 && nonCancelledCount >= totalSlots;
+
+                cell.className = `cal-day${isToday ? ' today' : ''}${isSelected ? ' selected' : ''}${dayReservas.length ? ' has-events' : ''}${isDayBlocked ? ' blocked' : ''}${isFullyOccupied ? ' full' : ''}`;
                 cell.innerHTML = `
           <div class="day-num">${d}</div>
           ${isDayBlocked ? '<div class="blocked-icon">🚫</div>' : ''}
+          ${isFullyOccupied ? '<div class="blocked-icon">📌</div>' : ''}
           <div class="day-dots">
             ${dayReservas.slice(0, 4).map(r =>
                     `<div class="dot ${(r.estado || '').toLowerCase()}"></div>`
@@ -2107,7 +2141,7 @@
                     horaSelect.innerHTML = '<option value="">Domingo sin atención</option>';
                     return;
                 } else if (day === 6) { // Sabado
-                    commonSlots = commonSlots.filter(s => ['09:00', '10:00', '11:00', '12:00', '13:00'].includes(s));
+                    commonSlots = commonSlots.filter(s => s <= '13:30');
                 }
 
                 // Formatear al huso horario local
@@ -2295,6 +2329,9 @@
          * Si no existe, usa una lista genérica de respaldo.
          */
         function getProfileSlots() {
+            if (allHorarios && allHorarios.length > 0) {
+                return allHorarios.map(h => h.hora.substring(0, 5));
+            }
             if (currentProfile && Array.isArray(currentProfile.horarios) && currentProfile.horarios.length > 0) {
                 return currentProfile.horarios.map(h => h.substring(0, 5)); // asegurar HH:MM
             }
