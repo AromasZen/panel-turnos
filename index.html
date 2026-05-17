@@ -1083,26 +1083,62 @@
             }
 
             .app-header {
-                padding: 0.75rem 1rem;
-                flex-wrap: wrap;
-                gap: 0.5rem;
+                padding: 0.6rem 0.85rem;
+                flex-wrap: nowrap;
+                gap: 0;
             }
 
             .header-right {
-                gap: 0.5rem;
-                flex-wrap: wrap;
+                gap: 0.3rem;
+                flex-wrap: nowrap;
+                align-items: center;
+            }
+
+            /* Ocultar todo texto en botones del header */
+            .header-right button span,
+            .header-right button > span,
+            #btn-refresh span,
+            #btn-bloqueos span,
+            #btn-vista span,
+            #btn-export span,
+            #btn-logout span,
+            #user-email-label {
+                display: none !important;
+            }
+
+            /* Botones uniformes tipo ícono cuadrado */
+            .header-right button,
+            #btn-refresh,
+            #btn-bloqueos,
+            #btn-vista,
+            .btn-export,
+            .btn-darkmode,
+            #btn-logout {
+                width: 34px;
+                height: 34px;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 9px;
+                flex-shrink: 0;
+            }
+
+            /* Export wrap: sin posición relativa extra que rompa el flujo */
+            .export-wrap {
+                display: flex;
+                align-items: center;
+            }
+
+            /* Avatar pequeño */
+            .user-avatar-sm {
+                width: 28px;
+                height: 28px;
+                font-size: 0.75rem;
             }
 
             .empresa-badge {
                 display: none !important;
-            }
-
-            #btn-refresh span {
-                display: none;
-            }
-
-            #btn-bloqueos span {
-                display: none;
             }
 
             .stats-row {
