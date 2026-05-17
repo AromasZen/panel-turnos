@@ -22,6 +22,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+    <!-- Exportación -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
 
     <style>
         /* =============================================
@@ -52,6 +56,48 @@
             --completado-bg: #E0E7FF;
             --completado-tx: #3730A3;
         }
+
+        /* =============================================
+           DARK MODE
+        ============================================= */
+        [data-theme="dark"] {
+            --primary: #5B8FD4;
+            --primary-light: #7AAEE8;
+            --secondary: #1A2E4A;
+            --bg: #0F172A;
+            --surface: #1E293B;
+            --text: #E2E8F0;
+            --text-muted: #94A3B8;
+            --border: rgba(91, 143, 212, 0.18);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+            --pendiente-bg: #422006;
+            --pendiente-tx: #FCD34D;
+            --confirmado-bg: #052E16;
+            --confirmado-tx: #6EE7B7;
+            --cancelado-bg: #450A0A;
+            --cancelado-tx: #FCA5A5;
+            --completado-bg: #1E1B4B;
+            --completado-tx: #A5B4FC;
+        }
+        [data-theme="dark"] .app-header { background: #1E293B; border-color: rgba(91,143,212,0.15); }
+        [data-theme="dark"] .login-overlay { background: linear-gradient(135deg, #060D1F 0%, #0F1E3A 50%, #080F20 100%); }
+        [data-theme="dark"] .detail-box,
+        [data-theme="dark"] .login-card { background: #1E293B; border-color: rgba(91,143,212,0.15); }
+        [data-theme="dark"] .detail-close { background: #2D3F57; color: var(--text); }
+        [data-theme="dark"] .btn-save-estado,
+        [data-theme="dark"] .btn-delete-estado { background: #1E293B; }
+        [data-theme="dark"] .detail-estado-select,
+        [data-theme="dark"] .mensaje-box,
+        [data-theme="dark"] .notas-textarea { background: #0F172A; color: var(--text); border-color: var(--border); }
+        [data-theme="dark"] .horas-grid { background: #0F172A; }
+        [data-theme="dark"] .hora-check-label:hover { background: #1E3A5F; }
+        [data-theme="dark"] .hora-check-label.checked { background: #1E3A5F; }
+        [data-theme="dark"] .bloqueo-item { background: #2A1010; border-color: rgba(220,38,38,0.2); }
+        [data-theme="dark"] .flatpickr-calendar { background: #1E293B; border-color: var(--border); }
+        [data-theme="dark"] .swal2-popup { background: #1E293B; color: var(--text); }
+        [data-theme="dark"] .swal2-title { color: var(--text); }
+        [data-theme="dark"] .swal2-html-container { color: var(--text-muted); }
 
         * {
             margin: 0;
@@ -915,7 +961,7 @@
         }
 
         /* =============================================
-       DÍAS BLOQUEADOS Y SIN DISPONIBILIDAD
+       DÍAS BLOQUEADOS
     ============================================= */
         .cal-day.blocked {
             background: #FFF1F2;
@@ -926,18 +972,6 @@
             border-color: #DC2626;
         }
         .cal-day.blocked .day-num {
-            color: #DC2626;
-        }
-        /* Día completamente lleno (todos los slots ocupados) */
-        .cal-day.full {
-            background: #FFF1F2;
-            border-color: rgba(220, 38, 38, 0.3);
-        }
-        .cal-day.full:hover {
-            background: #FFE4E6;
-            border-color: #DC2626;
-        }
-        .cal-day.full .day-num {
             color: #DC2626;
         }
         .blocked-icon {
@@ -1415,6 +1449,149 @@
             font-family: 'Outfit', sans-serif;
             flex-shrink: 0;
         }
+
+        /* =============================================
+           BOTONES HEADER (dark mode, agenda, export)
+        ============================================= */
+        .btn-darkmode, .btn-vista, .btn-export {
+            background: none;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            padding: 0.45rem 0.85rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        .btn-darkmode:hover { background: var(--secondary); border-color: var(--primary); color: var(--primary); }
+        .btn-vista:hover { background: var(--secondary); border-color: var(--primary); color: var(--primary); }
+        .btn-export { border-color: rgba(5, 150, 105, 0.3); color: #059669; }
+        .btn-export:hover { background: #D1FAE5; border-color: #059669; }
+        [data-theme="dark"] .btn-export:hover { background: #052E16; }
+        .btn-vista.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Export dropdown */
+        .export-wrap { position: relative; }
+        .export-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            min-width: 160px;
+            z-index: 200;
+            display: none;
+        }
+        .export-dropdown.open { display: block; animation: fadeDown 0.18s ease; }
+        @keyframes fadeDown { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+        .export-opt {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.7rem 1rem; font-size: 0.88rem; font-weight: 500;
+            color: var(--text); cursor: pointer; transition: background 0.15s;
+            border: none; background: none; width: 100%; font-family: 'Inter', sans-serif;
+        }
+        .export-opt:hover { background: var(--secondary); color: var(--primary); }
+
+        /* =============================================
+           VISTA AGENDA SEMANAL
+        ============================================= */
+        #agenda-view { display: none; }
+        #agenda-view.visible { display: block; }
+        #calendar-view.hidden { display: none; }
+
+        .agenda-nav {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+        .agenda-nav h2 {
+            font-family: 'Outfit', sans-serif; font-size: 1.15rem;
+            font-weight: 700; color: var(--primary);
+        }
+        .agenda-week {
+            display: flex; flex-direction: column; gap: 0.75rem;
+        }
+        .agenda-day-block {
+            background: var(--surface); border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border); overflow: hidden;
+            transition: var(--transition);
+        }
+        .agenda-day-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.65rem 1rem;
+            background: var(--secondary); border-bottom: 1.5px solid var(--border);
+        }
+        .agenda-day-name {
+            font-family: 'Outfit', sans-serif; font-weight: 700;
+            font-size: 0.95rem; color: var(--primary);
+            text-transform: capitalize;
+        }
+        .agenda-day-date { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
+        .agenda-day-count {
+            font-size: 0.72rem; font-weight: 700; padding: 0.15rem 0.55rem;
+            border-radius: 50px; background: var(--primary); color: white;
+        }
+        .agenda-day-header.today-header { background: var(--primary); }
+        .agenda-day-header.today-header .agenda-day-name,
+        .agenda-day-header.today-header .agenda-day-date { color: white; }
+        .agenda-day-header.today-header .agenda-day-count { background: rgba(255,255,255,0.25); }
+        .agenda-day-header.blocked-header { background: #FFF1F2; }
+        .agenda-day-header.blocked-header .agenda-day-name { color: #DC2626; }
+        [data-theme="dark"] .agenda-day-header.blocked-header { background: #2A1010; }
+
+        .agenda-turnos { padding: 0.5rem 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; }
+        .agenda-empty-day { padding: 0.6rem 1rem; font-size: 0.82rem; color: var(--text-muted); font-style: italic; }
+        .agenda-turno-row {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.5rem 0.6rem; border-radius: 8px;
+            cursor: pointer; transition: var(--transition);
+            border: 1px solid transparent;
+        }
+        .agenda-turno-row:hover { background: var(--secondary); border-color: var(--border); }
+        .agenda-hora {
+            font-family: 'Outfit', sans-serif; font-weight: 700;
+            font-size: 0.88rem; color: var(--primary); min-width: 52px;
+        }
+        .agenda-nombre { font-weight: 600; font-size: 0.9rem; color: var(--text); flex: 1; }
+        .agenda-servicio { font-size: 0.78rem; color: var(--text-muted); }
+        .agenda-dot {
+            width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+        }
+        .agenda-dot.pendiente { background: #D97706; }
+        .agenda-dot.confirmado { background: #059669; }
+        .agenda-dot.cancelado { background: #DC2626; }
+        .agenda-dot.completado { background: #4F46E5; }
+
+        /* =============================================
+           NOTAS INTERNAS
+        ============================================= */
+        .notas-wrap { margin-top: 0.25rem; }
+        .notas-textarea {
+            width: 100%; padding: 0.65rem 0.9rem;
+            border: 1.5px solid var(--border); border-radius: 10px;
+            font-family: 'Inter', sans-serif; font-size: 0.88rem;
+            color: var(--text); background: white; resize: vertical;
+            min-height: 72px; outline: none; transition: var(--transition);
+            line-height: 1.5;
+        }
+        .notas-textarea:focus { border-color: var(--primary); }
+        .notas-textarea::placeholder { color: var(--text-muted); font-style: italic; }
+        .btn-save-notas {
+            display: flex; align-items: center; gap: 0.4rem;
+            padding: 0.4rem 0.85rem; border-radius: 8px;
+            border: 1.5px solid var(--primary); background: none;
+            color: var(--primary); font-size: 0.8rem; font-weight: 600;
+            font-family: 'Inter', sans-serif; cursor: pointer;
+            transition: var(--transition); margin-top: 0.4rem;
+        }
+        .btn-save-notas:hover { background: var(--primary); color: white; }
     </style>
 </head>
 
@@ -1433,10 +1610,25 @@
             </div>
             <span class="empresa-badge" id="empresa-label" style="display:none !important; visibility:hidden;"></span>
             <button id="btn-refresh" style="display:none">
-                <i class="ph-bold ph-arrows-clockwise"></i> Actualizar
+                <i class="ph-bold ph-arrows-clockwise"></i> <span>Actualizar</span>
             </button>
+            <button class="btn-vista" id="btn-vista" style="display:none" title="Cambiar vista">
+                <i class="ph-bold ph-calendar-blank" id="btn-vista-icon"></i> <span id="btn-vista-label">Agenda</span>
+            </button>
+            <div class="export-wrap" id="export-wrap" style="display:none">
+                <button class="btn-export" id="btn-export" title="Exportar turnos">
+                    <i class="ph-bold ph-export"></i> <span>Exportar</span>
+                </button>
+                <div class="export-dropdown" id="export-dropdown">
+                    <button class="export-opt" id="export-pdf"><i class="ph-bold ph-file-pdf"></i> Exportar PDF</button>
+                    <button class="export-opt" id="export-excel"><i class="ph-bold ph-file-xls"></i> Exportar Excel</button>
+                </div>
+            </div>
             <button class="btn-bloqueos" id="btn-bloqueos" style="display:none" onclick="openBloqueosModal()">
                 <i class="ph-bold ph-prohibit"></i> <span>Bloqueos</span>
+            </button>
+            <button class="btn-darkmode" id="btn-darkmode" title="Modo oscuro">
+                <i class="ph-bold ph-moon" id="darkmode-icon"></i>
             </button>
             <button class="btn-logout" id="btn-logout" style="display:none">
                 <i class="ph-bold ph-sign-out"></i> Salir
@@ -1528,17 +1720,31 @@
         <div class="main">
 
             <!-- CALENDAR -->
-            <div class="calendar-panel">
-                <div class="cal-nav">
-                    <button class="cal-nav-btn" id="prev-month"><i class="ph-bold ph-caret-left"></i></button>
-                    <h2 id="cal-title"></h2>
-                    <button class="cal-nav-btn" id="next-month"><i class="ph-bold ph-caret-right"></i></button>
+            <div id="calendar-view">
+                <div class="calendar-panel">
+                    <div class="cal-nav">
+                        <button class="cal-nav-btn" id="prev-month"><i class="ph-bold ph-caret-left"></i></button>
+                        <h2 id="cal-title"></h2>
+                        <button class="cal-nav-btn" id="next-month"><i class="ph-bold ph-caret-right"></i></button>
+                    </div>
+                    <div class="cal-weekdays">
+                        <span>Dom</span><span>Lun</span><span>Mar</span><span>Mié</span>
+                        <span>Jue</span><span>Vie</span><span>Sáb</span>
+                    </div>
+                    <div class="cal-grid" id="cal-grid"></div>
                 </div>
-                <div class="cal-weekdays">
-                    <span>Dom</span><span>Lun</span><span>Mar</span><span>Mié</span>
-                    <span>Jue</span><span>Vie</span><span>Sáb</span>
+            </div>
+
+            <!-- AGENDA SEMANAL -->
+            <div id="agenda-view">
+                <div class="calendar-panel">
+                    <div class="agenda-nav">
+                        <button class="cal-nav-btn" id="agenda-prev"><i class="ph-bold ph-caret-left"></i></button>
+                        <h2 id="agenda-title">Semana actual</h2>
+                        <button class="cal-nav-btn" id="agenda-next"><i class="ph-bold ph-caret-right"></i></button>
+                    </div>
+                    <div class="agenda-week" id="agenda-week"></div>
                 </div>
-                <div class="cal-grid" id="cal-grid"></div>
             </div>
 
             <!-- SIDEBAR -->
@@ -1606,6 +1812,13 @@
                 <div class="detail-field detail-field-full" id="det-mensaje-wrap">
                     <div class="field-label">Mensaje del paciente</div>
                     <div class="mensaje-box" id="det-mensaje">–</div>
+                </div>
+                <div class="detail-field detail-field-full">
+                    <div class="field-label">🔒 Notas internas (solo visible en el panel)</div>
+                    <div class="notas-wrap">
+                        <textarea class="notas-textarea" id="det-notas" placeholder="Escribí notas sobre este paciente o turno..."></textarea>
+                        <button class="btn-save-notas" id="btn-save-notas"><i class="ph-bold ph-floppy-disk"></i> Guardar nota</button>
+                    </div>
                 </div>
                 <div class="detail-field detail-field-full">
                     <div class="field-label">Estado del turno</div>
@@ -1907,17 +2120,10 @@
 
                 // Verificar si el día completo está bloqueado
                 const isDayBlocked = allBloques.some(b => b.fecha === dateStr && !b.hora);
-
-                // Verificar si todos los slots del día están ocupados (sin disponibilidad)
-                const nonCancelledCount = dayReservas.filter(r => r.estado !== 'Cancelado').length;
-                const totalSlots = allHorarios.length;
-                const isFullyOccupied = !isDayBlocked && totalSlots > 0 && nonCancelledCount >= totalSlots;
-
-                cell.className = `cal-day${isToday ? ' today' : ''}${isSelected ? ' selected' : ''}${dayReservas.length ? ' has-events' : ''}${isDayBlocked ? ' blocked' : ''}${isFullyOccupied ? ' full' : ''}`;
+                cell.className = `cal-day${isToday ? ' today' : ''}${isSelected ? ' selected' : ''}${dayReservas.length ? ' has-events' : ''}${isDayBlocked ? ' blocked' : ''}`;
                 cell.innerHTML = `
           <div class="day-num">${d}</div>
           ${isDayBlocked ? '<div class="blocked-icon">🚫</div>' : ''}
-          ${isFullyOccupied ? '<div class="blocked-icon">📌</div>' : ''}
           <div class="day-dots">
             ${dayReservas.slice(0, 4).map(r =>
                     `<div class="dot ${(r.estado || '').toLowerCase()}"></div>`
@@ -2017,6 +2223,9 @@
                 msgWrap.style.display = 'none';
             }
 
+            // Notas internas
+            document.getElementById('det-notas').value = r.notas_internas || '';
+
             // WhatsApp link
             const tel = (r.telefono_cliente || '').replace(/\D/g, '');
             const mensaje = encodeURIComponent(
@@ -2069,6 +2278,32 @@
             renderCalendar();
             showToast('Estado actualizado correctamente', 'success');
             closeDetail();
+        });
+
+        // ==========================================================
+        // NOTAS INTERNAS
+        // ==========================================================
+        document.getElementById('btn-save-notas').addEventListener('click', async () => {
+            if (!currentReserva) return;
+            const notas = document.getElementById('det-notas').value.trim();
+            const btn = document.getElementById('btn-save-notas');
+            btn.disabled = true;
+
+            const { error } = await db
+                .from('aareservas')
+                .update({ notas_internas: notas })
+                .eq('id', currentReserva.id)
+                .eq('empresa_id', EMPRESA_ID);
+
+            btn.disabled = false;
+            if (error) {
+                showToast('Error al guardar nota', 'error');
+            } else {
+                const idx = allReservas.findIndex(r => r.id === currentReserva.id);
+                if (idx !== -1) allReservas[idx].notas_internas = notas;
+                currentReserva.notas_internas = notas;
+                showToast('Nota guardada', 'success');
+            }
         });
 
         // ==========================================================
@@ -2377,11 +2612,12 @@
         function showLoginScreen() {
             document.getElementById('login-overlay').classList.remove('hidden');
             document.getElementById('app-content').style.display = 'none';
-            // Ocultar elementos del header que requieren sesión
             document.getElementById('empresa-label').style.display = 'none';
             document.getElementById('btn-refresh').style.display = 'none';
             document.getElementById('btn-logout').style.display = 'none';
             document.getElementById('user-info').style.display = 'none';
+            document.getElementById('btn-vista').style.display = 'none';
+            document.getElementById('export-wrap').style.display = 'none';
         }
 
         async function showAppScreen(user) {
@@ -2414,6 +2650,8 @@
             document.getElementById('btn-refresh').style.display = '';
             document.getElementById('btn-bloqueos').style.display = '';
             document.getElementById('btn-logout').style.display = '';
+            document.getElementById('btn-vista').style.display = '';
+            document.getElementById('export-wrap').style.display = '';
             document.getElementById('app-content').style.display = 'block';
 
             // Ocultar overlay con transición
@@ -2641,6 +2879,226 @@
                 showLoginScreen();
             }
         })();
+
+        // ==========================================================
+        // DARK MODE
+        // ==========================================================
+        (function initDarkMode() {
+            const saved = localStorage.getItem('panelTheme');
+            if (saved === 'dark') applyDark(true, false);
+        })();
+
+        function applyDark(isDark, save = true) {
+            const html = document.documentElement;
+            const icon = document.getElementById('darkmode-icon');
+            if (isDark) {
+                html.setAttribute('data-theme', 'dark');
+                icon.className = 'ph-bold ph-sun';
+                if (save) localStorage.setItem('panelTheme', 'dark');
+            } else {
+                html.removeAttribute('data-theme');
+                icon.className = 'ph-bold ph-moon';
+                if (save) localStorage.setItem('panelTheme', 'light');
+            }
+        }
+
+        document.getElementById('btn-darkmode').addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            applyDark(!isDark);
+        });
+
+        // ==========================================================
+        // EXPORTAR PDF / EXCEL
+        // ==========================================================
+        const exportBtn = document.getElementById('btn-export');
+        const exportDD = document.getElementById('export-dropdown');
+
+        exportBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            exportDD.classList.toggle('open');
+        });
+        document.addEventListener('click', () => exportDD.classList.remove('open'));
+
+        function getExportRows() {
+            const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+            return allReservas.map(r => ([
+                r.fecha_reserva,
+                formatHora(r.hora_reserva),
+                r.nombre_cliente,
+                r.telefono_cliente || '',
+                r.email_cliente || '',
+                r.servicio || '',
+                r.modalidad || '',
+                r.estado || '',
+                r.mensaje || '',
+                r.notas_internas || ''
+            ]));
+        }
+
+        const EXPORT_HEADERS = ['Fecha','Hora','Paciente','Teléfono','Email','Servicio','Modalidad','Estado','Mensaje','Notas internas'];
+
+        document.getElementById('export-pdf').addEventListener('click', () => {
+            exportDD.classList.remove('open');
+            if (allReservas.length === 0) { showToast('No hay turnos para exportar', 'error'); return; }
+            const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.text(`Turnos — ${monthNames[currentMonth]} ${currentYear}`, 40, 40);
+            doc.autoTable({
+                head: [EXPORT_HEADERS],
+                body: getExportRows(),
+                startY: 60,
+                styles: { fontSize: 8, cellPadding: 4 },
+                headStyles: { fillColor: [44, 82, 130], textColor: 255, fontStyle: 'bold' },
+                alternateRowStyles: { fillColor: [240, 244, 248] },
+                columnStyles: { 0: { cellWidth: 65 }, 1: { cellWidth: 45 }, 8: { cellWidth: 80 }, 9: { cellWidth: 80 } }
+            });
+            doc.save(`Turnos_${monthNames[currentMonth]}_${currentYear}.pdf`);
+            showToast('PDF generado correctamente', 'success');
+        });
+
+        document.getElementById('export-excel').addEventListener('click', () => {
+            exportDD.classList.remove('open');
+            if (allReservas.length === 0) { showToast('No hay turnos para exportar', 'error'); return; }
+            const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+            const wsData = [EXPORT_HEADERS, ...getExportRows()];
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+            ws['!cols'] = [10,8,18,14,22,22,12,12,25,25].map(w => ({ wch: w }));
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, `${monthNames[currentMonth]} ${currentYear}`);
+            XLSX.writeFile(wb, `Turnos_${monthNames[currentMonth]}_${currentYear}.xlsx`);
+            showToast('Excel generado correctamente', 'success');
+        });
+
+        // ==========================================================
+        // VISTA AGENDA SEMANAL
+        // ==========================================================
+        let isAgendaView = false;
+        let agendaWeekStart = getWeekStart(new Date());
+
+        function getWeekStart(date) {
+            const d = new Date(date);
+            const day = d.getDay(); // 0=Dom
+            d.setDate(d.getDate() - day);
+            d.setHours(0,0,0,0);
+            return d;
+        }
+
+        function getDateStr(date) {
+            return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+        }
+
+        function renderAgenda() {
+            const diasNombres = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+            const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+            const today = new Date();
+            today.setHours(0,0,0,0);
+
+            // Rango de la semana
+            const weekEnd = new Date(agendaWeekStart);
+            weekEnd.setDate(weekEnd.getDate() + 6);
+
+            // Titulo
+            const startStr = `${agendaWeekStart.getDate()} ${meses[agendaWeekStart.getMonth()]}`;
+            const endStr = `${weekEnd.getDate()} ${meses[weekEnd.getMonth()]} ${weekEnd.getFullYear()}`;
+            document.getElementById('agenda-title').textContent = `${startStr} – ${endStr}`;
+
+            // Fetch si la semana no está en el mes cargado — cargar todo el rango necesario
+            const container = document.getElementById('agenda-week');
+            container.innerHTML = '';
+
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(agendaWeekStart);
+                d.setDate(d.getDate() + i);
+                const dateStr = getDateStr(d);
+                const isToday = d.getTime() === today.getTime();
+                const dayReservas = allReservas.filter(r => r.fecha_reserva === dateStr)
+                    .sort((a,b) => a.hora_reserva.localeCompare(b.hora_reserva));
+                const isDayBlocked = allBloques.some(b => b.fecha === dateStr && !b.hora);
+
+                let headerClass = 'agenda-day-header';
+                if (isToday) headerClass += ' today-header';
+                else if (isDayBlocked) headerClass += ' blocked-header';
+
+                const countHtml = dayReservas.length > 0
+                    ? `<span class="agenda-day-count">${dayReservas.length}</span>`
+                    : (isDayBlocked ? '<span style="font-size:0.8rem">🚫</span>' : '');
+
+                const turnosHtml = dayReservas.length === 0
+                    ? `<div class="agenda-empty-day">${isDayBlocked ? 'Día bloqueado' : 'Sin turnos'}</div>`
+                    : `<div class="agenda-turnos">${dayReservas.map(r => `
+                        <div class="agenda-turno-row" data-id="${r.id}">
+                            <div class="agenda-dot ${(r.estado||'pendiente').toLowerCase()}"></div>
+                            <div class="agenda-hora">${formatHora(r.hora_reserva)}</div>
+                            <div>
+                                <div class="agenda-nombre">${r.nombre_cliente}</div>
+                                <div class="agenda-servicio">${r.servicio} · ${r.modalidad}</div>
+                            </div>
+                            <span class="turno-estado-badge badge-${(r.estado||'').toLowerCase()}" style="margin-left:auto;flex-shrink:0">${r.estado||'Pendiente'}</span>
+                        </div>`).join('')}</div>`;
+
+                const block = document.createElement('div');
+                block.className = 'agenda-day-block';
+                block.innerHTML = `
+                    <div class="${headerClass}">
+                        <div>
+                            <div class="agenda-day-name">${diasNombres[d.getDay()]}</div>
+                            <div class="agenda-day-date">${d.getDate()} de ${meses[d.getMonth()]} de ${d.getFullYear()}</div>
+                        </div>
+                        ${countHtml}
+                    </div>
+                    ${turnosHtml}`;
+                container.appendChild(block);
+
+                // Click en fila de turno
+                block.querySelectorAll('.agenda-turno-row').forEach(row => {
+                    row.addEventListener('click', () => {
+                        const reserva = allReservas.find(r => r.id === row.dataset.id);
+                        if (reserva) openDetail(reserva);
+                    });
+                });
+            }
+        }
+
+        document.getElementById('btn-vista').addEventListener('click', () => {
+            isAgendaView = !isAgendaView;
+            const calView = document.getElementById('calendar-view');
+            const agendaView = document.getElementById('agenda-view');
+            const icon = document.getElementById('btn-vista-icon');
+            const label = document.getElementById('btn-vista-label');
+            const btn = document.getElementById('btn-vista');
+
+            if (isAgendaView) {
+                calView.classList.add('hidden');
+                agendaView.classList.add('visible');
+                icon.className = 'ph-bold ph-calendar-dots';
+                label.textContent = 'Calendario';
+                btn.classList.add('active');
+                agendaWeekStart = getWeekStart(new Date());
+                renderAgenda();
+            } else {
+                calView.classList.remove('hidden');
+                agendaView.classList.remove('visible');
+                icon.className = 'ph-bold ph-calendar-blank';
+                label.textContent = 'Agenda';
+                btn.classList.remove('active');
+            }
+        });
+
+        document.getElementById('agenda-prev').addEventListener('click', () => {
+            agendaWeekStart.setDate(agendaWeekStart.getDate() - 7);
+            renderAgenda();
+        });
+        document.getElementById('agenda-next').addEventListener('click', () => {
+            agendaWeekStart.setDate(agendaWeekStart.getDate() + 7);
+            renderAgenda();
+        });
+
     </script>
 
     <script>
