@@ -80,24 +80,69 @@
             --completado-bg: #1E1B4B;
             --completado-tx: #A5B4FC;
         }
-        [data-theme="dark"] .app-header { background: #1E293B; border-color: rgba(91,143,212,0.15); }
-        [data-theme="dark"] .login-overlay { background: linear-gradient(135deg, #060D1F 0%, #0F1E3A 50%, #080F20 100%); }
+
+        [data-theme="dark"] .app-header {
+            background: #1E293B;
+            border-color: rgba(91, 143, 212, 0.15);
+        }
+
+        [data-theme="dark"] .login-overlay {
+            background: linear-gradient(135deg, #060D1F 0%, #0F1E3A 50%, #080F20 100%);
+        }
+
         [data-theme="dark"] .detail-box,
-        [data-theme="dark"] .login-card { background: #1E293B; border-color: rgba(91,143,212,0.15); }
-        [data-theme="dark"] .detail-close { background: #2D3F57; color: var(--text); }
+        [data-theme="dark"] .login-card {
+            background: #1E293B;
+            border-color: rgba(91, 143, 212, 0.15);
+        }
+
+        [data-theme="dark"] .detail-close {
+            background: #2D3F57;
+            color: var(--text);
+        }
+
         [data-theme="dark"] .btn-save-estado,
-        [data-theme="dark"] .btn-delete-estado { background: #1E293B; }
+        [data-theme="dark"] .btn-delete-estado {
+            background: #1E293B;
+        }
+
         [data-theme="dark"] .detail-estado-select,
         [data-theme="dark"] .mensaje-box,
-        [data-theme="dark"] .notas-textarea { background: #0F172A; color: var(--text); border-color: var(--border); }
-        [data-theme="dark"] .horas-grid { background: #0F172A; }
-        [data-theme="dark"] .hora-check-label:hover { background: #1E3A5F; }
-        [data-theme="dark"] .hora-check-label.checked { background: #1E3A5F; }
-        [data-theme="dark"] .bloqueo-item { background: #2A1010; border-color: rgba(220,38,38,0.2); }
-        [data-theme="dark"] .flatpickr-calendar { background: #1E293B; border-color: var(--border); }
-        [data-theme="dark"] .swal2-popup { background: #1E293B; color: var(--text); }
-        [data-theme="dark"] .swal2-title { color: var(--text); }
-        [data-theme="dark"] .swal2-html-container { color: var(--text-muted); }
+        [data-theme="dark"] .notas-textarea {
+            background: #0F172A;
+            color: var(--text);
+            border-color: var(--border);
+        }
+
+        [data-theme="dark"] .horas-grid {
+            background: #0F172A;
+        }
+
+        [data-theme="dark"] .hora-check-label:hover {
+            background: #1E3A5F;
+        }
+
+        [data-theme="dark"] .hora-check-label.checked {
+            background: #1E3A5F;
+        }
+
+        [data-theme="dark"] .bloqueo-item {
+            background: #2A1010;
+            border-color: rgba(220, 38, 38, 0.2);
+        }
+
+        [data-theme="dark"] .swal2-popup {
+            background: #1E293B;
+            color: var(--text);
+        }
+
+        [data-theme="dark"] .swal2-title {
+            color: var(--text);
+        }
+
+        [data-theme="dark"] .swal2-html-container {
+            color: var(--text-muted);
+        }
 
         * {
             margin: 0;
@@ -1061,6 +1106,177 @@
             padding: 0;
         }
 
+        /* =============================================
+       CENTRO — VISTA MULTI-PROFESIONAL
+    ============================================= */
+        .centro-toolbar {
+            padding: 0.75rem 2rem 0;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .centro-selector-row {
+            background: var(--surface);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow);
+            padding: 0.85rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .centro-selector-row label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .centro-selector-row select {
+            flex: 1;
+            max-width: 320px;
+            padding: 0.5rem 0.75rem;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.88rem;
+            color: var(--text);
+            background: white;
+            cursor: pointer;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .centro-selector-row select:focus {
+            border-color: var(--primary);
+        }
+
+        .rol-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.25rem 0.65rem;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .rol-badge.centro {
+            background: linear-gradient(135deg, #E0E7FF, #C7D2FE);
+            color: #3730A3;
+        }
+
+        .rol-badge.psicologo {
+            background: var(--secondary);
+            color: var(--primary);
+        }
+
+        .turno-profesional {
+            font-size: 0.78rem;
+            color: #6366F1;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 0.25rem;
+            padding: 0.15rem 0.5rem;
+            background: #EEF2FF;
+            border-radius: 50px;
+            width: fit-content;
+        }
+
+        .turno-profesional i {
+            font-size: 0.85rem;
+        }
+
+        .stats-prof-table {
+            width: 100%;
+            background: var(--surface);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .stats-prof-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .stats-prof-table thead th {
+            background: #F7FAFC;
+            padding: 0.65rem 1rem;
+            text-align: left;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            border-bottom: 1.5px solid var(--border);
+        }
+
+        .stats-prof-table tbody td {
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .stats-prof-table tbody tr:last-child td {
+            border-bottom: none;
+            font-weight: 700;
+            background: #F7FAFC;
+        }
+
+        .stats-prof-table .prof-name {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .stats-prof-table .count-cell {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            text-align: center;
+            min-width: 50px;
+        }
+
+        .centro-readonly-notice {
+            background: #EEF2FF;
+            border: 1px solid #C7D2FE;
+            border-radius: 10px;
+            padding: 0.65rem 1rem;
+            font-size: 0.82rem;
+            color: #4338CA;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .centro-readonly-notice i {
+            font-size: 1rem;
+        }
+
+        .detail-profesional-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.7rem;
+            background: #EEF2FF;
+            color: #4338CA;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.88rem;
+        }
+
+        .detail-profesional-badge i {
+            color: #6366F1 !important;
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .main {
@@ -1094,9 +1310,13 @@
                 align-items: center;
             }
 
+            .empresa-badge {
+                display: none !important;
+            }
+
             /* Ocultar todo texto en botones del header */
             .header-right button span,
-            .header-right button > span,
+            .header-right button>span,
             #btn-refresh span,
             #btn-bloqueos span,
             #btn-vista span,
@@ -1124,7 +1344,7 @@
                 flex-shrink: 0;
             }
 
-            /* Export wrap: sin posición relativa extra que rompa el flujo */
+            /* Export wrap */
             .export-wrap {
                 display: flex;
                 align-items: center;
@@ -1135,10 +1355,6 @@
                 width: 28px;
                 height: 28px;
                 font-size: 0.75rem;
-            }
-
-            .empresa-badge {
-                display: none !important;
             }
 
             .stats-row {
@@ -1489,7 +1705,9 @@
         /* =============================================
            BOTONES HEADER (dark mode, agenda, export)
         ============================================= */
-        .btn-darkmode, .btn-vista, .btn-export {
+        .btn-darkmode,
+        .btn-vista,
+        .btn-export {
             background: none;
             border: 1.5px solid var(--border);
             border-radius: 10px;
@@ -1504,15 +1722,44 @@
             font-weight: 500;
             transition: var(--transition);
         }
-        .btn-darkmode:hover { background: var(--secondary); border-color: var(--primary); color: var(--primary); }
-        .btn-vista:hover { background: var(--secondary); border-color: var(--primary); color: var(--primary); }
-        .btn-export { border-color: rgba(5, 150, 105, 0.3); color: #059669; }
-        .btn-export:hover { background: #D1FAE5; border-color: #059669; }
-        [data-theme="dark"] .btn-export:hover { background: #052E16; }
-        .btn-vista.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .btn-darkmode:hover {
+            background: var(--secondary);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-vista:hover {
+            background: var(--secondary);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-export {
+            border-color: rgba(5, 150, 105, 0.3);
+            color: #059669;
+        }
+
+        .btn-export:hover {
+            background: #D1FAE5;
+            border-color: #059669;
+        }
+
+        [data-theme="dark"] .btn-export:hover {
+            background: #052E16;
+        }
+
+        .btn-vista.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
 
         /* Export dropdown */
-        .export-wrap { position: relative; }
+        .export-wrap {
+            position: relative;
+        }
+
         .export-dropdown {
             position: absolute;
             top: calc(100% + 6px);
@@ -1526,108 +1773,270 @@
             z-index: 200;
             display: none;
         }
-        .export-dropdown.open { display: block; animation: fadeDown 0.18s ease; }
-        @keyframes fadeDown { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
-        .export-opt {
-            display: flex; align-items: center; gap: 0.6rem;
-            padding: 0.7rem 1rem; font-size: 0.88rem; font-weight: 500;
-            color: var(--text); cursor: pointer; transition: background 0.15s;
-            border: none; background: none; width: 100%; font-family: 'Inter', sans-serif;
+
+        .export-dropdown.open {
+            display: block;
+            animation: fadeDown 0.18s ease;
         }
-        .export-opt:hover { background: var(--secondary); color: var(--primary); }
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .export-opt {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.7rem 1rem;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text);
+            cursor: pointer;
+            transition: background 0.15s;
+            border: none;
+            background: none;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .export-opt:hover {
+            background: var(--secondary);
+            color: var(--primary);
+        }
 
         /* =============================================
            VISTA AGENDA SEMANAL
         ============================================= */
-        #agenda-view { display: none; }
-        #agenda-view.visible { display: block; }
-        #calendar-view.hidden { display: none; }
+        #agenda-view {
+            display: none;
+        }
+
+        #agenda-view.visible {
+            display: block;
+        }
+
+        #calendar-view.hidden {
+            display: none;
+        }
 
         .agenda-nav {
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 1.25rem;
         }
+
         .agenda-nav h2 {
-            font-family: 'Outfit', sans-serif; font-size: 1.15rem;
-            font-weight: 700; color: var(--primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary);
         }
+
         .agenda-week {
-            display: flex; flex-direction: column; gap: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
         }
+
         .agenda-day-block {
-            background: var(--surface); border-radius: var(--radius-sm);
-            border: 1.5px solid var(--border); overflow: hidden;
+            background: var(--surface);
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border);
+            overflow: hidden;
             transition: var(--transition);
         }
+
         .agenda-day-header {
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             padding: 0.65rem 1rem;
-            background: var(--secondary); border-bottom: 1.5px solid var(--border);
+            background: var(--secondary);
+            border-bottom: 1.5px solid var(--border);
         }
+
         .agenda-day-name {
-            font-family: 'Outfit', sans-serif; font-weight: 700;
-            font-size: 0.95rem; color: var(--primary);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--primary);
             text-transform: capitalize;
         }
-        .agenda-day-date { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
-        .agenda-day-count {
-            font-size: 0.72rem; font-weight: 700; padding: 0.15rem 0.55rem;
-            border-radius: 50px; background: var(--primary); color: white;
-        }
-        .agenda-day-header.today-header { background: var(--primary); }
-        .agenda-day-header.today-header .agenda-day-name,
-        .agenda-day-header.today-header .agenda-day-date { color: white; }
-        .agenda-day-header.today-header .agenda-day-count { background: rgba(255,255,255,0.25); }
-        .agenda-day-header.blocked-header { background: #FFF1F2; }
-        .agenda-day-header.blocked-header .agenda-day-name { color: #DC2626; }
-        [data-theme="dark"] .agenda-day-header.blocked-header { background: #2A1010; }
 
-        .agenda-turnos { padding: 0.5rem 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; }
-        .agenda-empty-day { padding: 0.6rem 1rem; font-size: 0.82rem; color: var(--text-muted); font-style: italic; }
+        .agenda-day-date {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .agenda-day-count {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.15rem 0.55rem;
+            border-radius: 50px;
+            background: var(--primary);
+            color: white;
+        }
+
+        .agenda-day-header.today-header {
+            background: var(--primary);
+        }
+
+        .agenda-day-header.today-header .agenda-day-name,
+        .agenda-day-header.today-header .agenda-day-date {
+            color: white;
+        }
+
+        .agenda-day-header.today-header .agenda-day-count {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .agenda-day-header.blocked-header {
+            background: #FFF1F2;
+        }
+
+        .agenda-day-header.blocked-header .agenda-day-name {
+            color: #DC2626;
+        }
+
+        [data-theme="dark"] .agenda-day-header.blocked-header {
+            background: #2A1010;
+        }
+
+        .agenda-turnos {
+            padding: 0.5rem 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .agenda-empty-day {
+            padding: 0.6rem 1rem;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
         .agenda-turno-row {
-            display: flex; align-items: center; gap: 0.75rem;
-            padding: 0.5rem 0.6rem; border-radius: 8px;
-            cursor: pointer; transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0.6rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
             border: 1px solid transparent;
         }
-        .agenda-turno-row:hover { background: var(--secondary); border-color: var(--border); }
+
+        .agenda-turno-row:hover {
+            background: var(--secondary);
+            border-color: var(--border);
+        }
+
         .agenda-hora {
-            font-family: 'Outfit', sans-serif; font-weight: 700;
-            font-size: 0.88rem; color: var(--primary); min-width: 52px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: var(--primary);
+            min-width: 52px;
         }
-        .agenda-nombre { font-weight: 600; font-size: 0.9rem; color: var(--text); flex: 1; }
-        .agenda-servicio { font-size: 0.78rem; color: var(--text-muted); }
+
+        .agenda-nombre {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text);
+            flex: 1;
+        }
+
+        .agenda-servicio {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
         .agenda-dot {
-            width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
         }
-        .agenda-dot.pendiente { background: #D97706; }
-        .agenda-dot.confirmado { background: #059669; }
-        .agenda-dot.cancelado { background: #DC2626; }
-        .agenda-dot.completado { background: #4F46E5; }
+
+        .agenda-dot.pendiente {
+            background: #D97706;
+        }
+
+        .agenda-dot.confirmado {
+            background: #059669;
+        }
+
+        .agenda-dot.cancelado {
+            background: #DC2626;
+        }
+
+        .agenda-dot.completado {
+            background: #4F46E5;
+        }
 
         /* =============================================
            NOTAS INTERNAS
         ============================================= */
-        .notas-wrap { margin-top: 0.25rem; }
+        .notas-wrap {
+            margin-top: 0.25rem;
+        }
+
         .notas-textarea {
-            width: 100%; padding: 0.65rem 0.9rem;
-            border: 1.5px solid var(--border); border-radius: 10px;
-            font-family: 'Inter', sans-serif; font-size: 0.88rem;
-            color: var(--text); background: white; resize: vertical;
-            min-height: 72px; outline: none; transition: var(--transition);
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.88rem;
+            color: var(--text);
+            background: white;
+            resize: vertical;
+            min-height: 72px;
+            outline: none;
+            transition: var(--transition);
             line-height: 1.5;
         }
-        .notas-textarea:focus { border-color: var(--primary); }
-        .notas-textarea::placeholder { color: var(--text-muted); font-style: italic; }
-        .btn-save-notas {
-            display: flex; align-items: center; gap: 0.4rem;
-            padding: 0.4rem 0.85rem; border-radius: 8px;
-            border: 1.5px solid var(--primary); background: none;
-            color: var(--primary); font-size: 0.8rem; font-weight: 600;
-            font-family: 'Inter', sans-serif; cursor: pointer;
-            transition: var(--transition); margin-top: 0.4rem;
+
+        .notas-textarea:focus {
+            border-color: var(--primary);
         }
-        .btn-save-notas:hover { background: var(--primary); color: white; }
+
+        .notas-textarea::placeholder {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .btn-save-notas {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.85rem;
+            border-radius: 8px;
+            border: 1.5px solid var(--primary);
+            background: none;
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 0.4rem;
+        }
+
+        .btn-save-notas:hover {
+            background: var(--primary);
+            color: white;
+        }
     </style>
 </head>
 
@@ -1644,6 +2053,7 @@
                 <span id="user-email-label"
                     style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
             </div>
+            <span class="rol-badge" id="rol-badge" style="display:none"></span>
             <span class="empresa-badge" id="empresa-label" style="display:none !important; visibility:hidden;"></span>
             <button id="btn-refresh" style="display:none">
                 <i class="ph-bold ph-arrows-clockwise"></i> <span>Actualizar</span>
@@ -1752,6 +2162,21 @@
             </div>
         </div>
 
+        <!-- CENTRO: Toolbar de filtro (oculto por defecto) -->
+        <div id="centro-toolbar" style="display:none">
+            <div style="padding: 0.75rem 2rem 0; max-width:1400px; margin:0 auto; width:100%;">
+                <div class="centro-selector-row">
+                    <label><i class="ph-bold ph-funnel"></i> Profesional</label>
+                    <select id="filtro-profesional">
+                        <option value="">👥 Todos los profesionales</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- CENTRO: Stats por profesional (oculto por defecto) -->
+        <div id="stats-prof-container" style="display:none; padding: 0.75rem 2rem 0; max-width:1400px; margin:0 auto; width:100%;"></div>
+
         <!-- MAIN -->
         <div class="main">
 
@@ -1821,6 +2246,10 @@
             </div>
 
             <div class="detail-grid">
+                <div class="detail-field detail-field-full" id="det-profesional-wrap" style="display:none">
+                    <div class="field-label">Profesional</div>
+                    <div class="field-value"><span class="detail-profesional-badge"><i class="ph-bold ph-user-circle"></i><span id="det-profesional">–</span></span></div>
+                </div>
                 <div class="detail-field">
                     <div class="field-label">Fecha</div>
                     <div class="field-value"><i class="ph-bold ph-calendar"></i><span id="det-fecha">–</span></div>
@@ -1852,8 +2281,10 @@
                 <div class="detail-field detail-field-full">
                     <div class="field-label">🔒 Notas internas (solo visible en el panel)</div>
                     <div class="notas-wrap">
-                        <textarea class="notas-textarea" id="det-notas" placeholder="Escribí notas sobre este paciente o turno..."></textarea>
-                        <button class="btn-save-notas" id="btn-save-notas"><i class="ph-bold ph-floppy-disk"></i> Guardar nota</button>
+                        <textarea class="notas-textarea" id="det-notas"
+                            placeholder="Escribí notas sobre este paciente o turno..."></textarea>
+                        <button class="btn-save-notas" id="btn-save-notas"><i class="ph-bold ph-floppy-disk"></i>
+                            Guardar nota</button>
                     </div>
                 </div>
                 <div class="detail-field detail-field-full">
@@ -1865,6 +2296,10 @@
                         <option value="Completado">🎯 Completado</option>
                     </select>
                 </div>
+            </div>
+
+            <div class="centro-readonly-notice" id="centro-readonly-notice" style="display:none">
+                <i class="ph-bold ph-eye"></i> Modo solo lectura — Vista de centro
             </div>
 
             <div class="detail-actions">
@@ -2039,16 +2474,32 @@
         let blFechaPickerInstance = null; // flatpickr del modal bloqueos
         let currentProfile = null; // perfil completo del usuario logueado
 
+        // Estado para centros
+        let IS_CENTRO = false;              // true si el usuario es un centro
+        let EMPRESAS_IDS = [];              // [empresa_id] para psicólogo, [emp1,emp2,...] para centro
+        let profesionalesCentro = [];       // [{empresa_id, nombre_display, id}] — solo centros
+        let filtroEmpresaActiva = null;     // null=todos, 'emp_id'=filtrado — solo centros
+
+        let isAgendaView = false;
+        let agendaWeekStart = getWeekStart(new Date());
+
         // ==========================================================
         // FETCH HORARIOS
         // ==========================================================
         async function fetchHorarios() {
-            const { data, error } = await db
+            let query = db
                 .from('aahorarios')
                 .select('*')
-                .eq('empresa_id', EMPRESA_ID)
                 .order('hora', { ascending: true });
 
+            if (IS_CENTRO) {
+                const ids = filtroEmpresaActiva ? [filtroEmpresaActiva] : EMPRESAS_IDS;
+                query = query.in('empresa_id', ids);
+            } else {
+                query = query.eq('empresa_id', EMPRESA_ID);
+            }
+
+            const { data, error } = await query;
             if (!error) allHorarios = data || [];
         }
 
@@ -2060,15 +2511,22 @@
             const lastDay = new Date(currentYear, currentMonth + 1, 0);
             const lastDayStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(lastDay.getDate()).padStart(2, '0')}`;
 
-            const { data, error } = await db
+            let query = db
                 .from('aabloques')
                 .select('*')
-                .eq('empresa_id', EMPRESA_ID)
                 .gte('fecha', firstDay)
                 .lte('fecha', lastDayStr)
                 .order('fecha', { ascending: true })
                 .order('hora', { ascending: true });
 
+            if (IS_CENTRO) {
+                const ids = filtroEmpresaActiva ? [filtroEmpresaActiva] : EMPRESAS_IDS;
+                query = query.in('empresa_id', ids);
+            } else {
+                query = query.eq('empresa_id', EMPRESA_ID);
+            }
+
+            const { data, error } = await query;
             if (!error) allBloques = data || [];
         }
 
@@ -2080,14 +2538,22 @@
             const lastDay = new Date(currentYear, currentMonth + 1, 0);
             const lastDayStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(lastDay.getDate()).padStart(2, '0')}`;
 
-            const { data, error } = await db
+            let query = db
                 .from('aareservas')
                 .select('*')
-                .eq('empresa_id', EMPRESA_ID)
                 .gte('fecha_reserva', firstDay)
                 .lte('fecha_reserva', lastDayStr)
                 .order('fecha_reserva', { ascending: true })
                 .order('hora_reserva', { ascending: true });
+
+            if (IS_CENTRO) {
+                const ids = filtroEmpresaActiva ? [filtroEmpresaActiva] : EMPRESAS_IDS;
+                query = query.in('empresa_id', ids);
+            } else {
+                query = query.eq('empresa_id', EMPRESA_ID);
+            }
+
+            const { data, error } = await query;
 
             if (error) {
                 console.error('Error fetching reservas:', error);
@@ -2098,6 +2564,7 @@
             await fetchHorarios();
             await fetchBloques();
             renderCalendar();
+            if (isAgendaView) renderAgenda();
             updateStats();
             if (selectedDate) renderTurnosList(selectedDate);
         }
@@ -2110,6 +2577,42 @@
             document.getElementById('stat-pend').textContent = allReservas.filter(r => r.estado === 'Pendiente').length;
             document.getElementById('stat-conf').textContent = allReservas.filter(r => r.estado === 'Confirmado').length;
             document.getElementById('stat-canc').textContent = allReservas.filter(r => r.estado === 'Cancelado').length;
+
+            // Stats por profesional (solo para centros)
+            const tableCont = document.getElementById('stats-prof-container');
+            if (IS_CENTRO && tableCont) {
+                let rows = '';
+                profesionalesCentro.forEach(p => {
+                    const pRes = allReservas.filter(r => r.empresa_id === p.empresa_id);
+                    rows += `<tr>
+                        <td class="prof-name">${p.nombre_display}</td>
+                        <td class="count-cell">${pRes.length}</td>
+                        <td class="count-cell">${pRes.filter(r => r.estado === 'Pendiente').length}</td>
+                        <td class="count-cell">${pRes.filter(r => r.estado === 'Confirmado').length}</td>
+                        <td class="count-cell">${pRes.filter(r => r.estado === 'Cancelado').length}</td>
+                    </tr>`;
+                });
+                rows += `<tr>
+                    <td>TOTAL</td>
+                    <td class="count-cell">${allReservas.length}</td>
+                    <td class="count-cell">${allReservas.filter(r => r.estado === 'Pendiente').length}</td>
+                    <td class="count-cell">${allReservas.filter(r => r.estado === 'Confirmado').length}</td>
+                    <td class="count-cell">${allReservas.filter(r => r.estado === 'Cancelado').length}</td>
+                </tr>`;
+                tableCont.innerHTML = `<div class="stats-prof-table"><table>
+                    <thead><tr>
+                        <th>Profesional</th>
+                        <th style="text-align:center">Total</th>
+                        <th style="text-align:center">Pend.</th>
+                        <th style="text-align:center">Conf.</th>
+                        <th style="text-align:center">Canc.</th>
+                    </tr></thead>
+                    <tbody>${rows}</tbody>
+                </table></div>`;
+                tableCont.style.display = '';
+            } else if (tableCont) {
+                tableCont.style.display = 'none';
+            }
         }
 
         // ==========================================================
@@ -2213,6 +2716,7 @@
             <span class="turno-estado-badge badge-${(r.estado || '').toLowerCase()}">${r.estado || 'Pendiente'}</span>
           </div>
           <div class="turno-nombre">${r.nombre_cliente}</div>
+          ${IS_CENTRO ? `<div class="turno-profesional"><i class="ph-bold ph-user-circle"></i>${getNombreProfesional(r.empresa_id)}</div>` : ''}
           <div class="turno-servicio">
             <i class="ph-bold ph-brain"></i>
             ${r.servicio}
@@ -2249,6 +2753,31 @@
             document.getElementById('det-modalidad').textContent = r.modalidad || '–';
             document.getElementById('det-estado-select').value = r.estado || 'Pendiente';
 
+            // Profesional (solo visible para centros)
+            const profWrap = document.getElementById('det-profesional-wrap');
+            if (profWrap) {
+                if (IS_CENTRO) {
+                    document.getElementById('det-profesional').textContent = getNombreProfesional(r.empresa_id);
+                    profWrap.style.display = '';
+                } else {
+                    profWrap.style.display = 'none';
+                }
+            }
+
+            // Centro: modo solo lectura
+            const readonlyNotice = document.getElementById('centro-readonly-notice');
+            const actionsDiv = document.querySelector('.detail-actions');
+            const estadoSelect = document.getElementById('det-estado-select');
+            if (IS_CENTRO) {
+                if (readonlyNotice) readonlyNotice.style.display = '';
+                if (actionsDiv) actionsDiv.style.display = 'none';
+                if (estadoSelect) estadoSelect.disabled = true;
+            } else {
+                if (readonlyNotice) readonlyNotice.style.display = 'none';
+                if (actionsDiv) actionsDiv.style.display = '';
+                if (estadoSelect) estadoSelect.disabled = false;
+            }
+
             // Mensaje
             const msgWrap = document.getElementById('det-mensaje-wrap');
             const msgEl = document.getElementById('det-mensaje');
@@ -2260,7 +2789,16 @@
             }
 
             // Notas internas
-            document.getElementById('det-notas').value = r.notas_internas || '';
+            const notesTextarea = document.getElementById('det-notas');
+            const saveNotesBtn = document.getElementById('btn-save-notas');
+            if (notesTextarea) notesTextarea.value = r.notas_internas || '';
+            if (IS_CENTRO) {
+                if (notesTextarea) notesTextarea.disabled = true;
+                if (saveNotesBtn) saveNotesBtn.style.display = 'none';
+            } else {
+                if (notesTextarea) notesTextarea.disabled = false;
+                if (saveNotesBtn) saveNotesBtn.style.display = '';
+            }
 
             // WhatsApp link
             const tel = (r.telefono_cliente || '').replace(/\D/g, '');
@@ -2314,32 +2852,6 @@
             renderCalendar();
             showToast('Estado actualizado correctamente', 'success');
             closeDetail();
-        });
-
-        // ==========================================================
-        // NOTAS INTERNAS
-        // ==========================================================
-        document.getElementById('btn-save-notas').addEventListener('click', async () => {
-            if (!currentReserva) return;
-            const notas = document.getElementById('det-notas').value.trim();
-            const btn = document.getElementById('btn-save-notas');
-            btn.disabled = true;
-
-            const { error } = await db
-                .from('aareservas')
-                .update({ notas_internas: notas })
-                .eq('id', currentReserva.id)
-                .eq('empresa_id', EMPRESA_ID);
-
-            btn.disabled = false;
-            if (error) {
-                showToast('Error al guardar nota', 'error');
-            } else {
-                const idx = allReservas.findIndex(r => r.id === currentReserva.id);
-                if (idx !== -1) allReservas[idx].notas_internas = notas;
-                currentReserva.notas_internas = notas;
-                showToast('Nota guardada', 'success');
-            }
         });
 
         // ==========================================================
@@ -2648,6 +3160,7 @@
         function showLoginScreen() {
             document.getElementById('login-overlay').classList.remove('hidden');
             document.getElementById('app-content').style.display = 'none';
+            // Ocultar elementos del header que requieren sesión
             document.getElementById('empresa-label').style.display = 'none';
             document.getElementById('btn-refresh').style.display = 'none';
             document.getElementById('btn-logout').style.display = 'none';
@@ -2666,7 +3179,6 @@
 
             if (error || !profile) {
                 console.error('Error al cargar perfil:', error);
-                // Si no hay perfil, volvemos al login con un error claro
                 showLoginScreen();
                 const errEl = document.getElementById('login-error');
                 const errMsg = document.getElementById('login-error-msg');
@@ -2675,8 +3187,48 @@
                 return;
             }
 
-            EMPRESA_ID = profile.empresa_id;
-            currentProfile = profile; // guardar perfil completo
+            currentProfile = profile;
+
+            // ── Bifurcación por rol ──────────────────────────────
+            if (profile.rol === 'centro') {
+                IS_CENTRO = true;
+
+                // Obtener psicólogos del centro
+                const { data: psicologos, error: errPsic } = await db
+                    .from('aaprofles')
+                    .select('id, empresa_id, nombre_display')
+                    .eq('centro_id', profile.centro_id)
+                    .eq('rol', 'psicologo');
+
+                if (errPsic || !psicologos || psicologos.length === 0) {
+                    console.error('Error cargando profesionales del centro:', errPsic);
+                    showLoginScreen();
+                    const errEl = document.getElementById('login-error');
+                    const errMsg = document.getElementById('login-error-msg');
+                    errMsg.textContent = 'Este centro no tiene profesionales asociados.';
+                    errEl.classList.add('show');
+                    return;
+                }
+
+                profesionalesCentro = psicologos;
+                EMPRESAS_IDS = psicologos.map(p => p.empresa_id);
+                EMPRESA_ID = null;
+                filtroEmpresaActiva = null;
+
+                // Configurar UI del centro
+                setupCentroUI();
+            } else {
+                // Psicólogo individual — flujo original
+                IS_CENTRO = false;
+                EMPRESA_ID = profile.empresa_id;
+                EMPRESAS_IDS = [EMPRESA_ID];
+                profesionalesCentro = [];
+                filtroEmpresaActiva = null;
+
+                // Ocultar elementos exclusivos de centro
+                document.getElementById('centro-toolbar').style.display = 'none';
+                document.getElementById('stats-prof-container').style.display = 'none';
+            }
 
             // Header info
             const initials = user.email.charAt(0).toUpperCase();
@@ -2684,17 +3236,61 @@
             document.getElementById('user-email-label').textContent = user.email;
             document.getElementById('user-info').style.display = 'flex';
             document.getElementById('btn-refresh').style.display = '';
-            document.getElementById('btn-bloqueos').style.display = '';
             document.getElementById('btn-logout').style.display = '';
             document.getElementById('btn-vista').style.display = '';
             document.getElementById('export-wrap').style.display = '';
             document.getElementById('app-content').style.display = 'block';
+
+            // Rol badge en header
+            const rolBadge = document.getElementById('rol-badge');
+            if (IS_CENTRO) {
+                rolBadge.textContent = 'Centro';
+                rolBadge.className = 'rol-badge centro';
+                rolBadge.style.display = '';
+                // Ocultar botones de acción para centro (solo lectura)
+                document.getElementById('btn-bloqueos').style.display = 'none';
+                const addBtn = document.querySelector('.btn-add-turno');
+                if (addBtn) addBtn.style.display = 'none';
+            } else {
+                rolBadge.textContent = 'Profesional';
+                rolBadge.className = 'rol-badge psicologo';
+                rolBadge.style.display = '';
+                document.getElementById('btn-bloqueos').style.display = '';
+                const addBtn = document.querySelector('.btn-add-turno');
+                if (addBtn) addBtn.style.display = '';
+            }
 
             // Ocultar overlay con transición
             document.getElementById('login-overlay').classList.add('hidden');
 
             // Cargar datos
             fetchReservas();
+        }
+
+        // ── Configuración UI exclusiva de centro ─────────────
+        function setupCentroUI() {
+            const toolbar = document.getElementById('centro-toolbar');
+            toolbar.style.display = '';
+
+            // Llenar selector de profesional
+            const select = document.getElementById('filtro-profesional');
+            select.innerHTML = '<option value="">👥 Todos los profesionales</option>' +
+                profesionalesCentro.map(p =>
+                    `<option value="${p.empresa_id}">👤 ${p.nombre_display}</option>`
+                ).join('');
+
+            // Evento de filtro
+            select.onchange = function () {
+                filtroEmpresaActiva = this.value || null;
+                fetchReservas();
+            };
+        }
+
+        // ── Helper: nombre de profesional por empresa_id ─────
+        function getNombreProfesional(empresaId) {
+            if (!IS_CENTRO || !profesionalesCentro.length) return '';
+            const prof = profesionalesCentro.find(p => p.empresa_id === empresaId);
+            return prof ? prof.nombre_display : 'Profesional';
         }
 
         // Formulario de login
@@ -2739,9 +3335,21 @@
         // Logout
         document.getElementById('btn-logout').addEventListener('click', async () => {
             await db.auth.signOut();
+            // Resetear todo el estado
             allReservas = [];
+            allBloques = [];
+            allHorarios = [];
             selectedDate = null;
             EMPRESA_ID = null;
+            IS_CENTRO = false;
+            EMPRESAS_IDS = [];
+            profesionalesCentro = [];
+            filtroEmpresaActiva = null;
+            currentProfile = null;
+            // Ocultar UI de centro
+            document.getElementById('centro-toolbar').style.display = 'none';
+            document.getElementById('stats-prof-container').style.display = 'none';
+            document.getElementById('rol-badge').style.display = 'none';
             showLoginScreen();
             // Limpiar campo contraseña por seguridad
             document.getElementById('login-password').value = '';
@@ -2956,8 +3564,6 @@
         document.addEventListener('click', () => exportDD.classList.remove('open'));
 
         function getExportRows() {
-            const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-                'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
             return allReservas.map(r => ([
                 r.fecha_reserva,
                 formatHora(r.hora_reserva),
@@ -2972,13 +3578,13 @@
             ]));
         }
 
-        const EXPORT_HEADERS = ['Fecha','Hora','Paciente','Teléfono','Email','Servicio','Modalidad','Estado','Mensaje','Notas internas'];
+        const EXPORT_HEADERS = ['Fecha', 'Hora', 'Paciente', 'Teléfono', 'Email', 'Servicio', 'Modalidad', 'Estado', 'Mensaje', 'Notas internas'];
 
         document.getElementById('export-pdf').addEventListener('click', () => {
             exportDD.classList.remove('open');
             if (allReservas.length === 0) { showToast('No hay turnos para exportar', 'error'); return; }
-            const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-                'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+            const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
             doc.setFont('helvetica', 'bold');
@@ -3000,11 +3606,11 @@
         document.getElementById('export-excel').addEventListener('click', () => {
             exportDD.classList.remove('open');
             if (allReservas.length === 0) { showToast('No hay turnos para exportar', 'error'); return; }
-            const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-                'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+            const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
             const wsData = [EXPORT_HEADERS, ...getExportRows()];
             const ws = XLSX.utils.aoa_to_sheet(wsData);
-            ws['!cols'] = [10,8,18,14,22,22,12,12,25,25].map(w => ({ wch: w }));
+            ws['!cols'] = [10, 8, 18, 14, 22, 22, 12, 12, 25, 25].map(w => ({ wch: w }));
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, `${monthNames[currentMonth]} ${currentYear}`);
             XLSX.writeFile(wb, `Turnos_${monthNames[currentMonth]}_${currentYear}.xlsx`);
@@ -3014,26 +3620,23 @@
         // ==========================================================
         // VISTA AGENDA SEMANAL
         // ==========================================================
-        let isAgendaView = false;
-        let agendaWeekStart = getWeekStart(new Date());
-
         function getWeekStart(date) {
             const d = new Date(date);
             const day = d.getDay(); // 0=Dom
             d.setDate(d.getDate() - day);
-            d.setHours(0,0,0,0);
+            d.setHours(0, 0, 0, 0);
             return d;
         }
 
         function getDateStr(date) {
-            return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
         }
 
         function renderAgenda() {
-            const diasNombres = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-            const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+            const diasNombres = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            const meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
             const today = new Date();
-            today.setHours(0,0,0,0);
+            today.setHours(0, 0, 0, 0);
 
             // Rango de la semana
             const weekEnd = new Date(agendaWeekStart);
@@ -3044,7 +3647,6 @@
             const endStr = `${weekEnd.getDate()} ${meses[weekEnd.getMonth()]} ${weekEnd.getFullYear()}`;
             document.getElementById('agenda-title').textContent = `${startStr} – ${endStr}`;
 
-            // Fetch si la semana no está en el mes cargado — cargar todo el rango necesario
             const container = document.getElementById('agenda-week');
             container.innerHTML = '';
 
@@ -3054,7 +3656,7 @@
                 const dateStr = getDateStr(d);
                 const isToday = d.getTime() === today.getTime();
                 const dayReservas = allReservas.filter(r => r.fecha_reserva === dateStr)
-                    .sort((a,b) => a.hora_reserva.localeCompare(b.hora_reserva));
+                    .sort((a, b) => a.hora_reserva.localeCompare(b.hora_reserva));
                 const isDayBlocked = allBloques.some(b => b.fecha === dateStr && !b.hora);
 
                 let headerClass = 'agenda-day-header';
@@ -3069,13 +3671,13 @@
                     ? `<div class="agenda-empty-day">${isDayBlocked ? 'Día bloqueado' : 'Sin turnos'}</div>`
                     : `<div class="agenda-turnos">${dayReservas.map(r => `
                         <div class="agenda-turno-row" data-id="${r.id}">
-                            <div class="agenda-dot ${(r.estado||'pendiente').toLowerCase()}"></div>
+                            <div class="agenda-dot ${(r.estado || 'pendiente').toLowerCase()}"></div>
                             <div class="agenda-hora">${formatHora(r.hora_reserva)}</div>
                             <div>
                                 <div class="agenda-nombre">${r.nombre_cliente}</div>
                                 <div class="agenda-servicio">${r.servicio} · ${r.modalidad}</div>
                             </div>
-                            <span class="turno-estado-badge badge-${(r.estado||'').toLowerCase()}" style="margin-left:auto;flex-shrink:0">${r.estado||'Pendiente'}</span>
+                            <span class="turno-estado-badge badge-${(r.estado || '').toLowerCase()}" style="margin-left:auto;flex-shrink:0">${r.estado || 'Pendiente'}</span>
                         </div>`).join('')}</div>`;
 
                 const block = document.createElement('div');
@@ -3135,6 +3737,31 @@
             renderAgenda();
         });
 
+        // ==========================================================
+        // NOTAS INTERNAS
+        // ==========================================================
+        document.getElementById('btn-save-notas').addEventListener('click', async () => {
+            if (!currentReserva) return;
+            const notas = document.getElementById('det-notas').value.trim();
+            const btn = document.getElementById('btn-save-notas');
+            btn.disabled = true;
+
+            const { error } = await db
+                .from('aareservas')
+                .update({ notas_internas: notas })
+                .eq('id', currentReserva.id)
+                .eq('empresa_id', currentReserva.empresa_id); // use reserva's enterprise id for security and correctness in case of center admin editing multiple profiles
+
+            btn.disabled = false;
+            if (error) {
+                showToast('Error al guardar nota', 'error');
+            } else {
+                const idx = allReservas.findIndex(r => r.id === currentReserva.id);
+                if (idx !== -1) allReservas[idx].notas_internas = notas;
+                currentReserva.notas_internas = notas;
+                showToast('Nota guardada', 'success');
+            }
+        });
     </script>
 
     <script>
