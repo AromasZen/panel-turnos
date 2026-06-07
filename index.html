@@ -202,6 +202,20 @@
             gap: 1rem;
         }
 
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-hamburger {
+            display: none;
+        }
+
+        .btn-darkmode span {
+            display: none;
+        }
+
         .empresa-badge {
             background: var(--secondary);
             color: var(--primary);
@@ -1305,6 +1319,7 @@
             }
 
             .header-right {
+                position: relative;
                 gap: 0.3rem;
                 flex-wrap: nowrap;
                 align-items: center;
@@ -1350,6 +1365,161 @@
             .export-wrap {
                 display: flex;
                 align-items: center;
+            }
+
+            /* Hamburger and actions mobile styling */
+            .btn-hamburger {
+                display: flex !important;
+                background: none;
+                border: 1.5px solid var(--border);
+                color: var(--primary);
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+
+            .header-actions {
+                display: none;
+            }
+
+            .header-actions.is-open {
+                display: flex !important;
+                flex-direction: column;
+                position: absolute;
+                top: calc(100% + 5px);
+                right: 0;
+                background: var(--surface);
+                border: 1.5px solid var(--border);
+                border-radius: 12px;
+                padding: 0.5rem;
+                min-width: 190px;
+                box-shadow: var(--shadow-lg);
+                z-index: 999;
+                gap: 0.25rem;
+                animation: slideFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            @keyframes slideFadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Mostrar textos de los botones dentro del menu hamburguesa abierto */
+            .header-actions.is-open button span,
+            .header-actions.is-open button>span,
+            .header-actions.is-open #btn-refresh span,
+            .header-actions.is-open #btn-bloqueos span,
+            .header-actions.is-open #btn-horarios span,
+            .header-actions.is-open #btn-vista span,
+            .header-actions.is-open #btn-export span,
+            .header-actions.is-open #btn-logout span {
+                display: inline !important;
+                font-size: 0.88rem;
+                font-weight: 500;
+                color: var(--text);
+            }
+
+            /* Estilo tipo item de lista para botones dentro del menu hamburguesa abierto */
+            .header-actions.is-open button,
+            .header-actions.is-open #btn-refresh,
+            .header-actions.is-open #btn-bloqueos,
+            .header-actions.is-open .btn-horarios,
+            .header-actions.is-open #btn-vista,
+            .header-actions.is-open .btn-export,
+            .header-actions.is-open .btn-darkmode,
+            .header-actions.is-open #btn-logout {
+                width: 100% !important;
+                height: 38px !important;
+                padding: 0 0.85rem !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+                gap: 0.6rem !important;
+                border-radius: 8px !important;
+                border: none !important;
+                background: none !important;
+                color: var(--text) !important;
+            }
+
+            .header-actions.is-open button:hover,
+            .header-actions.is-open #btn-refresh:hover,
+            .header-actions.is-open #btn-vista:hover,
+            .header-actions.is-open .btn-export:hover,
+            .header-actions.is-open .btn-darkmode:hover {
+                background: var(--secondary) !important;
+            }
+
+            /* Custom hover behaviors for critical actions inside open dropdown */
+            .header-actions.is-open #btn-bloqueos:hover {
+                background: #FEE2E2 !important;
+                color: #DC2626 !important;
+            }
+            [data-theme="dark"] .header-actions.is-open #btn-bloqueos:hover {
+                background: #450A0A !important;
+                color: #FCA5A5 !important;
+            }
+            .header-actions.is-open .btn-horarios:hover {
+                background: #D1FAE5 !important;
+                color: #059669 !important;
+            }
+            [data-theme="dark"] .header-actions.is-open .btn-horarios:hover {
+                background: #052E16 !important;
+                color: #6EE7B7 !important;
+            }
+            .header-actions.is-open #btn-logout:hover {
+                background: #FEE2E2 !important;
+                color: #DC2626 !important;
+            }
+            [data-theme="dark"] .header-actions.is-open #btn-logout:hover {
+                background: #450A0A !important;
+                color: #FCA5A5 !important;
+            }
+
+            /* Export wrap and dropdown on mobile */
+            .header-actions.is-open .export-wrap {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .header-actions.is-open .export-dropdown.open {
+                display: flex !important;
+                flex-direction: column;
+                position: static !important;
+                box-shadow: none !important;
+                border: none !important;
+                border-radius: 8px !important;
+                background: var(--bg) !important;
+                width: 100% !important;
+                margin-top: 0.2rem !important;
+                padding-left: 0.5rem !important;
+                gap: 0.1rem;
+            }
+
+            .header-actions.is-open .export-dropdown .export-opt {
+                width: 100% !important;
+                height: 36px !important;
+                padding: 0 0.85rem !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+                gap: 0.5rem !important;
+                border-radius: 6px !important;
+                border: none !important;
+                background: none !important;
+                color: var(--text) !important;
+                font-size: 0.82rem;
+            }
+
+            .header-actions.is-open .export-dropdown .export-opt:hover {
+                background: var(--secondary) !important;
             }
 
             /* Avatar pequeño */
@@ -2116,33 +2286,40 @@
             </div>
             <span class="rol-badge" id="rol-badge" style="display:none"></span>
             <span class="empresa-badge" id="empresa-label" style="display:none !important; visibility:hidden;"></span>
-            <button id="btn-refresh" style="display:none">
-                <i class="ph-bold ph-arrows-clockwise"></i> <span>Actualizar</span>
+            
+            <button class="btn-hamburger" id="btn-hamburger" style="display:none" title="Menú">
+                <i class="ph-bold ph-list"></i>
             </button>
-            <button class="btn-vista" id="btn-vista" style="display:none" title="Cambiar vista">
-                <i class="ph-bold ph-calendar-blank" id="btn-vista-icon"></i> <span id="btn-vista-label">Agenda</span>
-            </button>
-            <div class="export-wrap" id="export-wrap" style="display:none">
-                <button class="btn-export" id="btn-export" title="Exportar turnos">
-                    <i class="ph-bold ph-export"></i> <span>Exportar</span>
+
+            <div class="header-actions" id="header-actions">
+                <button id="btn-refresh" style="display:none">
+                    <i class="ph-bold ph-arrows-clockwise"></i> <span>Actualizar</span>
                 </button>
-                <div class="export-dropdown" id="export-dropdown">
-                    <button class="export-opt" id="export-pdf"><i class="ph-bold ph-file-pdf"></i> Exportar PDF</button>
-                    <button class="export-opt" id="export-excel"><i class="ph-bold ph-file-xls"></i> Exportar Excel</button>
+                <button class="btn-vista" id="btn-vista" style="display:none" title="Cambiar vista">
+                    <i class="ph-bold ph-calendar-blank" id="btn-vista-icon"></i> <span id="btn-vista-label">Agenda</span>
+                </button>
+                <div class="export-wrap" id="export-wrap" style="display:none">
+                    <button class="btn-export" id="btn-export" title="Exportar turnos">
+                        <i class="ph-bold ph-export"></i> <span>Exportar</span>
+                    </button>
+                    <div class="export-dropdown" id="export-dropdown">
+                        <button class="export-opt" id="export-pdf"><i class="ph-bold ph-file-pdf"></i> Exportar PDF</button>
+                        <button class="export-opt" id="export-excel"><i class="ph-bold ph-file-xls"></i> Exportar Excel</button>
+                    </div>
                 </div>
+                <button class="btn-bloqueos" id="btn-bloqueos" style="display:none" onclick="openBloqueosModal()">
+                    <i class="ph-bold ph-prohibit"></i> <span>Bloqueos</span>
+                </button>
+                <button class="btn-horarios" id="btn-horarios" style="display:none" onclick="openHorariosModal()">
+                    <i class="ph-bold ph-clock"></i> <span>Horarios</span>
+                </button>
+                <button class="btn-darkmode" id="btn-darkmode" title="Modo oscuro">
+                    <i class="ph-bold ph-moon" id="darkmode-icon"></i> <span>Modo oscuro</span>
+                </button>
+                <button class="btn-logout" id="btn-logout" style="display:none">
+                    <i class="ph-bold ph-sign-out"></i> <span>Salir</span>
+                </button>
             </div>
-            <button class="btn-bloqueos" id="btn-bloqueos" style="display:none" onclick="openBloqueosModal()">
-                <i class="ph-bold ph-prohibit"></i> <span>Bloqueos</span>
-            </button>
-            <button class="btn-horarios" id="btn-horarios" style="display:none" onclick="openHorariosModal()">
-                <i class="ph-bold ph-clock"></i> <span>Horarios</span>
-            </button>
-            <button class="btn-darkmode" id="btn-darkmode" title="Modo oscuro">
-                <i class="ph-bold ph-moon" id="darkmode-icon"></i>
-            </button>
-            <button class="btn-logout" id="btn-logout" style="display:none">
-                <i class="ph-bold ph-sign-out"></i> Salir
-            </button>
         </div>
     </header>
 
@@ -3297,6 +3474,8 @@
             document.getElementById('user-info').style.display = 'none';
             document.getElementById('btn-vista').style.display = 'none';
             document.getElementById('export-wrap').style.display = 'none';
+            document.getElementById('btn-hamburger').style.display = 'none';
+            document.getElementById('header-actions').classList.remove('is-open');
         }
 
         async function showAppScreen(user) {
@@ -3369,6 +3548,7 @@
             document.getElementById('btn-logout').style.display = '';
             document.getElementById('btn-vista').style.display = '';
             document.getElementById('export-wrap').style.display = '';
+            document.getElementById('btn-hamburger').style.display = '';
             document.getElementById('app-content').style.display = 'block';
 
             // Rol badge en header
@@ -3856,6 +4036,31 @@
         document.getElementById('btn-darkmode').addEventListener('click', () => {
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
             applyDark(!isDark);
+        });
+
+        // ==========================================================
+        // HAMBURGER MENU (MOBILE)
+        // ==========================================================
+        const btnHamburger = document.getElementById('btn-hamburger');
+        const headerActions = document.getElementById('header-actions');
+
+        btnHamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            headerActions.classList.toggle('is-open');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!headerActions.contains(e.target) && e.target !== btnHamburger && !btnHamburger.contains(e.target)) {
+                headerActions.classList.remove('is-open');
+            }
+        });
+
+        headerActions.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.id !== 'btn-export') {
+                    headerActions.classList.remove('is-open');
+                }
+            });
         });
 
         // ==========================================================
