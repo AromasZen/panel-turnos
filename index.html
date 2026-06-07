@@ -1319,6 +1319,7 @@
             .header-right button>span,
             #btn-refresh span,
             #btn-bloqueos span,
+            #btn-horarios span,
             #btn-vista span,
             #btn-export span,
             #btn-logout span,
@@ -1330,6 +1331,7 @@
             .header-right button,
             #btn-refresh,
             #btn-bloqueos,
+            .btn-horarios,
             #btn-vista,
             .btn-export,
             .btn-darkmode,
@@ -2037,6 +2039,65 @@
             background: var(--primary);
             color: white;
         }
+
+        /* =============================================
+           CONFIGURAR HORARIOS
+        ============================================= */
+        .btn-horarios {
+            background: none;
+            border: 1.5px solid rgba(5, 150, 105, 0.3);
+            border-radius: 10px;
+            padding: 0.45rem 0.85rem;
+            color: #059669;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        .btn-horarios:hover { background: #D1FAE5; border-color: #059669; }
+        [data-theme="dark"] .btn-horarios:hover { background: #052E16; }
+
+        .horarios-dias-tabs {
+            display: flex;
+            gap: 0.35rem;
+            margin-bottom: 1rem;
+        }
+        .horario-dia-tab {
+            flex: 1;
+            min-width: 40px;
+            padding: 0.55rem 0.2rem;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            background: none;
+            color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+        .horario-dia-tab:hover { border-color: var(--primary); color: var(--primary); background: var(--secondary); }
+        .horario-dia-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .horario-dia-tab.has-slots { border-color: rgba(5, 150, 105, 0.4); color: #059669; }
+        .horario-dia-tab.has-slots::after {
+            content: ''; display: block; width: 5px; height: 5px;
+            border-radius: 50%; background: #059669; margin: 4px auto 0;
+        }
+        .horario-dia-tab.active::after { background: white; }
+        .horarios-dia-info {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 0.75rem; padding: 0.5rem 0.75rem;
+            background: var(--secondary); border-radius: 8px;
+        }
+        #horarios-dia-nombre { font-weight: 700; font-family: 'Outfit', sans-serif; color: var(--primary); font-size: 0.95rem; }
+        #horarios-dia-count { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
+        .horarios-config-grid { max-height: 280px; grid-template-columns: repeat(4, 1fr); }
+        [data-theme="dark"] .horarios-dia-info { background: #1A2E4A; }
     </style>
 </head>
 
@@ -2072,6 +2133,9 @@
             </div>
             <button class="btn-bloqueos" id="btn-bloqueos" style="display:none" onclick="openBloqueosModal()">
                 <i class="ph-bold ph-prohibit"></i> <span>Bloqueos</span>
+            </button>
+            <button class="btn-horarios" id="btn-horarios" style="display:none" onclick="openHorariosModal()">
+                <i class="ph-bold ph-clock"></i> <span>Horarios</span>
             </button>
             <button class="btn-darkmode" id="btn-darkmode" title="Modo oscuro">
                 <i class="ph-bold ph-moon" id="darkmode-icon"></i>
@@ -2445,6 +2509,47 @@
         </div>
     </div>
 
+    <!-- MODAL CONFIGURAR HORARIOS -->
+    <div class="detail-overlay" id="horarios-overlay" role="dialog" aria-modal="true">
+        <div class="detail-box" style="max-width:620px;">
+            <button class="detail-close" id="horarios-close"><i class="ph-bold ph-x"></i></button>
+            <div class="detail-header" style="border-bottom:none; margin-bottom:0; padding-bottom:1rem;">
+                <div>
+                    <div class="detail-name">Configurar Horarios</div>
+                    <div class="detail-sub">Seleccioná los horarios disponibles para cada día de la semana.</div>
+                </div>
+            </div>
+            <div class="horarios-dias-tabs" id="horarios-dias-tabs">
+                <button type="button" class="horario-dia-tab" data-dia="1">Lun</button>
+                <button type="button" class="horario-dia-tab" data-dia="2">Mar</button>
+                <button type="button" class="horario-dia-tab" data-dia="3">Mié</button>
+                <button type="button" class="horario-dia-tab" data-dia="4">Jue</button>
+                <button type="button" class="horario-dia-tab" data-dia="5">Vie</button>
+                <button type="button" class="horario-dia-tab" data-dia="6">Sáb</button>
+                <button type="button" class="horario-dia-tab" data-dia="0">Dom</button>
+            </div>
+            <div class="horarios-dia-info">
+                <span id="horarios-dia-nombre">Seleccioná un día</span>
+                <span id="horarios-dia-count"></span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.35rem;">
+                <div style="display:flex;gap:0.5rem;">
+                    <button type="button" class="bl-select-all" onclick="toggleTodasHorasConfig(true)">Seleccionar todos</button>
+                    <button type="button" class="bl-select-all" onclick="toggleTodasHorasConfig(false)">Deseleccionar todos</button>
+                </div>
+            </div>
+            <div class="horas-grid horarios-config-grid" id="horarios-config-grid"></div>
+            <div style="display:flex;gap:0.75rem;margin-top:1rem;">
+                <button type="button" class="btn-save-estado" style="background:var(--primary);color:white;flex:1;" id="btn-guardar-horarios" onclick="guardarHorariosDelDia()">
+                    <i class="ph-bold ph-floppy-disk"></i> Guardar horarios del día
+                </button>
+                <button type="button" class="btn-save-estado" style="flex:0 0 auto;" id="btn-copiar-horarios" onclick="copiarHorariosAOtrosDias()">
+                    <i class="ph-bold ph-copy"></i> Copiar a otros días
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- TOAST -->
     <div class="toast" id="toast"><i class="ph-bold ph-check"></i><span id="toast-msg"></span></div>
 
@@ -2470,7 +2575,7 @@
         let selectedDate = null; // 'YYYY-MM-DD'
         let currentReserva = null; // turno abierto en modal
         let allBloques = [];       // bloqueos del mes cargado
-        let allHorarios = [];      // horarios de la empresa
+        let allHorarios = {};      // horarios por día { dia_semana: ['HH:MM',...] }
         let blFechaPickerInstance = null; // flatpickr del modal bloqueos
         let currentProfile = null; // perfil completo del usuario logueado
 
@@ -2488,7 +2593,7 @@
         // ==========================================================
         async function fetchHorarios() {
             let query = db
-                .from('aahorarios')
+                .from('aahorarios_dia')
                 .select('*')
                 .order('hora', { ascending: true });
 
@@ -2500,7 +2605,14 @@
             }
 
             const { data, error } = await query;
-            if (!error) allHorarios = data || [];
+            if (!error) {
+                allHorarios = {};
+                (data || []).forEach(row => {
+                    const d = row.dia_semana;
+                    if (!allHorarios[d]) allHorarios[d] = [];
+                    allHorarios[d].push(row.hora.substring(0, 5));
+                });
+            }
         }
 
         // ==========================================================
@@ -2909,28 +3021,40 @@
             horaSelect.innerHTML = '<option value="">Cargando horarios...</option>';
             horaSelect.disabled = true;
 
-            let commonSlots = getProfileSlots();
+            let commonSlots = null;
             const datesStrs = [];
+            const _diasNombres = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
 
             for (let date of selectedDates) {
                 const day = date.getDay();
-                if (day === 0) {
+                const daySlots = getProfileSlots(day);
+
+                if (daySlots.length === 0) {
                     Swal.fire({
                         title: 'Atención',
-                        text: 'Seleccionaste un domingo, día sin atención.',
+                        text: `No hay horarios configurados para ${_diasNombres[day]}.`,
                         icon: 'warning',
                         confirmButtonColor: '#2C5282'
                     });
-                    horaSelect.innerHTML = '<option value="">Domingo sin atención</option>';
+                    horaSelect.innerHTML = `<option value="">Sin horarios para ${_diasNombres[day]}</option>`;
                     return;
-                } else if (day === 6) { // Sabado
-                    commonSlots = commonSlots.filter(s => s <= '13:30');
+                }
+
+                if (commonSlots === null) {
+                    commonSlots = [...daySlots];
+                } else {
+                    commonSlots = commonSlots.filter(s => daySlots.includes(s));
                 }
 
                 // Formatear al huso horario local
                 const tzOffset = date.getTimezoneOffset() * 60000;
                 const localISOTime = new Date(date.getTime() - tzOffset).toISOString().split('T')[0];
                 datesStrs.push(localISOTime);
+            }
+
+            if (!commonSlots || commonSlots.length === 0) {
+                horaSelect.innerHTML = '<option value="">Sin horarios comunes entre los días seleccionados</option>';
+                return;
             }
 
             try {
@@ -3108,15 +3232,20 @@
 
         /**
          * Devuelve los slots horarios del perfil cargado.
-         * Busca el campo `horarios` en currentProfile (array de strings HH:MM).
-         * Si no existe, usa una lista genérica de respaldo.
+         * Si se pasa dayOfWeek (0-6), devuelve solo los de ese día.
+         * Sin parámetro, devuelve todos los slots únicos de todos los días.
          */
-        function getProfileSlots() {
-            if (allHorarios && allHorarios.length > 0) {
-                return allHorarios.map(h => h.hora.substring(0, 5));
-            }
-            if (currentProfile && Array.isArray(currentProfile.horarios) && currentProfile.horarios.length > 0) {
-                return currentProfile.horarios.map(h => h.substring(0, 5)); // asegurar HH:MM
+        function getProfileSlots(dayOfWeek) {
+            if (allHorarios && typeof allHorarios === 'object' && Object.keys(allHorarios).length > 0) {
+                if (typeof dayOfWeek === 'number') {
+                    return (allHorarios[dayOfWeek] || []).slice().sort();
+                }
+                // Sin día: devolver todos los slots únicos
+                const all = new Set();
+                Object.values(allHorarios).forEach(slots => {
+                    if (Array.isArray(slots)) slots.forEach(h => all.add(h));
+                });
+                if (all.size > 0) return [...all].sort();
             }
             // Fallback genérico
             return ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00'];
@@ -3164,6 +3293,7 @@
             document.getElementById('empresa-label').style.display = 'none';
             document.getElementById('btn-refresh').style.display = 'none';
             document.getElementById('btn-logout').style.display = 'none';
+            document.getElementById('btn-horarios').style.display = 'none';
             document.getElementById('user-info').style.display = 'none';
             document.getElementById('btn-vista').style.display = 'none';
             document.getElementById('export-wrap').style.display = 'none';
@@ -3249,6 +3379,7 @@
                 rolBadge.style.display = '';
                 // Ocultar botones de acción para centro (solo lectura)
                 document.getElementById('btn-bloqueos').style.display = 'none';
+                document.getElementById('btn-horarios').style.display = 'none';
                 const addBtn = document.querySelector('.btn-add-turno');
                 if (addBtn) addBtn.style.display = 'none';
             } else {
@@ -3256,6 +3387,7 @@
                 rolBadge.className = 'rol-badge psicologo';
                 rolBadge.style.display = '';
                 document.getElementById('btn-bloqueos').style.display = '';
+                document.getElementById('btn-horarios').style.display = '';
                 const addBtn = document.querySelector('.btn-add-turno');
                 if (addBtn) addBtn.style.display = '';
             }
@@ -3338,7 +3470,7 @@
             // Resetear todo el estado
             allReservas = [];
             allBloques = [];
-            allHorarios = [];
+            allHorarios = {};
             selectedDate = null;
             EMPRESA_ID = null;
             IS_CENTRO = false;
@@ -3350,6 +3482,7 @@
             document.getElementById('centro-toolbar').style.display = 'none';
             document.getElementById('stats-prof-container').style.display = 'none';
             document.getElementById('rol-badge').style.display = 'none';
+            document.getElementById('btn-horarios').style.display = 'none';
             showLoginScreen();
             // Limpiar campo contraseña por seguridad
             document.getElementById('login-password').value = '';
@@ -3510,6 +3643,180 @@
                 renderCalendar();
                 renderBloqueosListUI();
             }
+        }
+
+        // ==========================================================
+        // CONFIGURAR HORARIOS — Modal
+        // ==========================================================
+        let horariosConfigDia = null;
+
+        function openHorariosModal() {
+            document.getElementById('horarios-overlay').classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+            horariosConfigDia = null;
+            updateDiaTabsState();
+            document.getElementById('horarios-config-grid').innerHTML = '<div class="bloqueos-empty">Seleccioná un día para ver sus horarios</div>';
+            document.getElementById('horarios-dia-nombre').textContent = 'Seleccioná un día';
+            document.getElementById('horarios-dia-count').textContent = '';
+        }
+
+        function closeHorariosModal() {
+            document.getElementById('horarios-overlay').classList.remove('is-open');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('horarios-close').addEventListener('click', closeHorariosModal);
+        document.getElementById('horarios-overlay').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('horarios-overlay')) closeHorariosModal();
+        });
+
+        document.querySelectorAll('.horario-dia-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                horariosConfigDia = parseInt(tab.dataset.dia);
+                document.querySelectorAll('.horario-dia-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                renderHorariosConfigGrid();
+            });
+        });
+
+        function updateDiaTabsState() {
+            document.querySelectorAll('.horario-dia-tab').forEach(tab => {
+                const dia = parseInt(tab.dataset.dia);
+                const hasSlots = allHorarios[dia] && allHorarios[dia].length > 0;
+                tab.classList.toggle('has-slots', hasSlots);
+                tab.classList.remove('active');
+            });
+        }
+
+        function renderHorariosConfigGrid() {
+            const grid = document.getElementById('horarios-config-grid');
+            const diasNombres = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            document.getElementById('horarios-dia-nombre').textContent = diasNombres[horariosConfigDia];
+            const allSlots = [];
+            for (let h = 5; h <= 22; h++) {
+                for (let m = 0; m < 60; m += 15) {
+                    if (h === 22 && m > 0) break;
+                    allSlots.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
+                }
+            }
+            const currentSlots = allHorarios[horariosConfigDia] || [];
+            grid.innerHTML = allSlots.map(slot => {
+                const isChecked = currentSlots.includes(slot);
+                return `<label class="hora-check-label${isChecked ? ' checked' : ''}">
+                    <input type="checkbox" class="cfg-hora-cb" value="${slot}" ${isChecked ? 'checked' : ''}>
+                    ${slot}
+                </label>`;
+            }).join('');
+            grid.querySelectorAll('.cfg-hora-cb').forEach(cb => {
+                cb.addEventListener('change', () => {
+                    cb.closest('label').classList.toggle('checked', cb.checked);
+                    updateHorariosCount();
+                });
+            });
+            updateHorariosCount();
+        }
+
+        function updateHorariosCount() {
+            const count = document.querySelectorAll('.cfg-hora-cb:checked').length;
+            document.getElementById('horarios-dia-count').textContent = `${count} horario${count !== 1 ? 's' : ''} seleccionado${count !== 1 ? 's' : ''}`;
+        }
+
+        function toggleTodasHorasConfig(check) {
+            document.querySelectorAll('.cfg-hora-cb').forEach(cb => {
+                cb.checked = check;
+                cb.closest('label').classList.toggle('checked', check);
+            });
+            updateHorariosCount();
+        }
+
+        async function guardarHorariosDelDia() {
+            if (horariosConfigDia === null) { showToast('Seleccioná un día primero', 'error'); return; }
+            const btn = document.getElementById('btn-guardar-horarios');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i> Guardando...';
+            const horasSeleccionadas = [...document.querySelectorAll('.cfg-hora-cb:checked')].map(cb => cb.value);
+
+            // 1. Eliminar horarios existentes de este día
+            const { error: delError } = await db
+                .from('aahorarios_dia')
+                .delete()
+                .eq('empresa_id', EMPRESA_ID)
+                .eq('dia_semana', horariosConfigDia);
+
+            if (delError) {
+                console.error('Error eliminando horarios:', delError);
+                showToast('Error al guardar horarios', 'error');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="ph-bold ph-floppy-disk"></i> Guardar horarios del día';
+                return;
+            }
+
+            // 2. Insertar los nuevos
+            if (horasSeleccionadas.length > 0) {
+                const inserts = horasSeleccionadas.map(h => ({
+                    empresa_id: EMPRESA_ID,
+                    dia_semana: horariosConfigDia,
+                    hora: h + ':00'
+                }));
+                const { error: insError } = await db.from('aahorarios_dia').insert(inserts);
+                if (insError) {
+                    console.error('Error insertando horarios:', insError);
+                    showToast('Error al guardar horarios', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="ph-bold ph-floppy-disk"></i> Guardar horarios del día';
+                    return;
+                }
+            }
+
+            // 3. Refrescar estado
+            await fetchHorarios();
+            updateDiaTabsState();
+            document.querySelectorAll('.horario-dia-tab').forEach(t => {
+                t.classList.toggle('active', parseInt(t.dataset.dia) === horariosConfigDia);
+            });
+            const diasN = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+            showToast(`Horarios del ${diasN[horariosConfigDia]} guardados`, 'success');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="ph-bold ph-floppy-disk"></i> Guardar horarios del día';
+        }
+
+        async function copiarHorariosAOtrosDias() {
+            if (horariosConfigDia === null) { showToast('Seleccioná un día primero', 'error'); return; }
+            const diasNombres = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            const currentSlots = allHorarios[horariosConfigDia] || [];
+            if (currentSlots.length === 0) { showToast('Este día no tiene horarios para copiar', 'error'); return; }
+            const otrosDias = [0,1,2,3,4,5,6].filter(d => d !== horariosConfigDia);
+            const checkboxesHtml = otrosDias.map(d =>
+                `<label style="display:flex;align-items:center;gap:0.5rem;padding:0.3rem 0;cursor:pointer;">
+                    <input type="checkbox" value="${d}" style="accent-color:#2C5282;width:16px;height:16px;cursor:pointer;">
+                    ${diasNombres[d]}
+                </label>`
+            ).join('');
+            const result = await Swal.fire({
+                title: `Copiar horarios del ${diasNombres[horariosConfigDia]}`,
+                html: `<p style="margin-bottom:0.75rem;font-size:0.9rem;">Se copiarán ${currentSlots.length} horarios a los días seleccionados:</p>
+                       <div style="text-align:left;max-width:200px;margin:0 auto;">${checkboxesHtml}</div>`,
+                showCancelButton: true,
+                confirmButtonColor: '#2C5282',
+                cancelButtonColor: '#6B7280',
+                confirmButtonText: 'Copiar',
+                cancelButtonText: 'Cancelar',
+                preConfirm: () => {
+                    const checked = [...Swal.getPopup().querySelectorAll('input[type=checkbox]:checked')].map(cb => parseInt(cb.value));
+                    if (checked.length === 0) { Swal.showValidationMessage('Seleccioná al menos un día'); return false; }
+                    return checked;
+                }
+            });
+            if (!result.isConfirmed) return;
+            const diasDestino = result.value;
+            for (const dia of diasDestino) {
+                await db.from('aahorarios_dia').delete().eq('empresa_id', EMPRESA_ID).eq('dia_semana', dia);
+                const inserts = currentSlots.map(h => ({ empresa_id: EMPRESA_ID, dia_semana: dia, hora: h + ':00' }));
+                await db.from('aahorarios_dia').insert(inserts);
+            }
+            await fetchHorarios();
+            updateDiaTabsState();
+            showToast(`Horarios copiados a ${diasDestino.length} día(s)`, 'success');
         }
 
         // ==========================================================
