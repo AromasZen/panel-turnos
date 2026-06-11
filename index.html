@@ -126,10 +126,7 @@
             background: #1E3A5F;
         }
 
-        [data-theme="dark"] .bloqueo-item {
-            background: #2A1010;
-            border-color: rgba(220, 38, 38, 0.2);
-        }
+
 
         [data-theme="dark"] .swal2-popup {
             background: #1E293B;
@@ -1019,68 +1016,7 @@
             z-index: 100000 !important;
         }
 
-        /* =============================================
-       DÍAS BLOQUEADOS
-    ============================================= */
-        .cal-day.blocked {
-            background: #FFF1F2;
-            border-color: rgba(220, 38, 38, 0.3);
-        }
-        .cal-day.blocked:hover {
-            background: #FFE4E6;
-            border-color: #DC2626;
-        }
-        .cal-day.blocked .day-num {
-            color: #DC2626;
-        }
-        .blocked-icon {
-            font-size: 0.75rem;
-            margin-top: 1px;
-        }
-
-        /* Botón bloqueos header */
-        .btn-bloqueos {
-            background: none;
-            border: 1.5px solid rgba(220, 38, 38, 0.25);
-            border-radius: 10px;
-            padding: 0.45rem 0.85rem;
-            color: #DC2626;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.85rem;
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-        .btn-bloqueos:hover {
-            background: #FEE2E2;
-            border-color: #DC2626;
-        }
-
-        /* Modal bloqueos */
-        .bloqueos-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: 220px; overflow-y: auto; }
-        .bloqueo-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.6rem 0.9rem;
-            border-radius: 10px;
-            background: #FFF1F2;
-            border: 1px solid rgba(220,38,38,0.15);
-            font-size: 0.88rem;
-        }
-        .bloqueo-item .bloqueo-info { display: flex; flex-direction: column; gap: 0.15rem; }
-        .bloqueo-item .bloqueo-label { font-weight: 600; color: #DC2626; }
-        .bloqueo-item .bloqueo-motivo { font-size: 0.78rem; color: var(--text-muted); }
-        .btn-del-bloqueo {
-            background: none; border: none; color: #DC2626; cursor: pointer;
-            font-size: 1.1rem; padding: 0.2rem 0.4rem; border-radius: 6px;
-            transition: var(--transition);
-        }
-        .btn-del-bloqueo:hover { background: #FEE2E2; }
-        .bloqueos-empty { text-align:center; color: var(--text-muted); font-size:0.88rem; padding: 1rem; }
+        .horarios-empty { text-align:center; color: var(--text-muted); font-size:0.88rem; padding: 1rem; }
 
         /* Grid de checkboxes de horas */
         .horas-grid {
@@ -1333,7 +1269,6 @@
             .header-right button span,
             .header-right button>span,
             #btn-refresh span,
-            #btn-bloqueos span,
             #btn-horarios span,
             #btn-vista span,
             #btn-export span,
@@ -1345,7 +1280,6 @@
             /* Botones uniformes tipo ícono cuadrado */
             .header-right button,
             #btn-refresh,
-            #btn-bloqueos,
             .btn-horarios,
             #btn-vista,
             .btn-export,
@@ -1414,7 +1348,6 @@
             .header-actions.is-open button span,
             .header-actions.is-open button>span,
             .header-actions.is-open #btn-refresh span,
-            .header-actions.is-open #btn-bloqueos span,
             .header-actions.is-open #btn-horarios span,
             .header-actions.is-open #btn-vista span,
             .header-actions.is-open #btn-export span,
@@ -1428,7 +1361,6 @@
             /* Estilo tipo item de lista para botones dentro del menu hamburguesa abierto */
             .header-actions.is-open button,
             .header-actions.is-open #btn-refresh,
-            .header-actions.is-open #btn-bloqueos,
             .header-actions.is-open .btn-horarios,
             .header-actions.is-open #btn-vista,
             .header-actions.is-open .btn-export,
@@ -1455,15 +1387,7 @@
                 background: var(--secondary) !important;
             }
 
-            /* Custom hover behaviors for critical actions inside open dropdown */
-            .header-actions.is-open #btn-bloqueos:hover {
-                background: #FEE2E2 !important;
-                color: #DC2626 !important;
-            }
-            [data-theme="dark"] .header-actions.is-open #btn-bloqueos:hover {
-                background: #450A0A !important;
-                color: #FCA5A5 !important;
-            }
+
             .header-actions.is-open .btn-horarios:hover {
                 background: #D1FAE5 !important;
                 color: #059669 !important;
@@ -2307,9 +2231,7 @@
                         <button class="export-opt" id="export-excel"><i class="ph-bold ph-file-xls"></i> Exportar Excel</button>
                     </div>
                 </div>
-                <button class="btn-bloqueos" id="btn-bloqueos" style="display:none" onclick="openBloqueosModal()">
-                    <i class="ph-bold ph-prohibit"></i> <span>Bloqueos</span>
-                </button>
+
                 <button class="btn-horarios" id="btn-horarios" style="display:none" onclick="openHorariosModal()">
                     <i class="ph-bold ph-clock"></i> <span>Horarios</span>
                 </button>
@@ -2632,59 +2554,7 @@
         </div>
     </div>
 
-    <!-- MODAL BLOQUEOS -->
-    <div class="detail-overlay" id="bloqueos-overlay" role="dialog" aria-modal="true">
-        <div class="detail-box" style="max-width:560px;">
-            <button class="detail-close" id="bloqueos-close"><i class="ph-bold ph-x"></i></button>
 
-            <div class="detail-header" style="border-bottom:none; margin-bottom:0; padding-bottom:1rem;">
-                <div>
-                    <div class="detail-name">Gestionar Bloqueos</div>
-                    <div class="detail-sub">Bloqueá días completos u horas específicas para que no se puedan reservar.</div>
-                </div>
-            </div>
-
-            <form id="bloqueo-form" style="display:flex;flex-direction:column;gap:0.85rem;margin-bottom:1.25rem;">
-                <div class="detail-grid" style="margin-bottom:0;">
-                    <div class="detail-field">
-                        <label class="field-label">Tipo de bloqueo *</label>
-                        <select id="bl-tipo" class="detail-estado-select" required onchange="toggleBloqueoCampos()">
-                            <option value="dia_completo">📅 Días completos</option>
-                            <option value="hora_especifica">⏰ Horas específicas</option>
-                        </select>
-                    </div>
-                    <div class="detail-field">
-                        <label class="field-label">Fecha(s) * <span style="font-weight:400;text-transform:none;">(podés elegir varias)</span></label>
-                        <input type="text" id="bl-fecha" class="detail-estado-select" placeholder="Seleccioná una o más fechas" required readonly>
-                    </div>
-                    <div class="detail-field detail-field-full" id="bl-hora-wrap">
-                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.35rem;">
-                            <label class="field-label" style="margin:0;">Hora(s) * <span style="font-weight:400;text-transform:none;">(podés elegir varias)</span></label>
-                            <div style="display:flex;gap:0.5rem;">
-                                <button type="button" class="bl-select-all" onclick="toggleTodasHoras(true)">Todas</button>
-                                <button type="button" class="bl-select-all" onclick="toggleTodasHoras(false)">Ninguna</button>
-                            </div>
-                        </div>
-                        <div class="horas-grid" id="bl-horas-grid">
-                            <!-- generado por JS -->
-                        </div>
-                    </div>
-                    <div class="detail-field detail-field-full">
-                        <label class="field-label">Motivo (opcional)</label>
-                        <input type="text" id="bl-motivo" class="detail-estado-select" placeholder="Ej: Feriado, Vacaciones...">
-                    </div>
-                </div>
-                <button type="submit" class="btn-save-estado" style="background:var(--primary);color:white;" id="btn-guardar-bloqueo">
-                    <i class="ph-bold ph-prohibit"></i> Agregar bloqueo(s)
-                </button>
-            </form>
-
-            <div class="field-label" style="margin-bottom:0.5rem;">Bloqueos activos</div>
-            <div id="bloqueos-list" class="bloqueos-list">
-                <div class="bloqueos-empty">Cargando...</div>
-            </div>
-        </div>
-    </div>
 
     <!-- MODAL CONFIGURAR HORARIOS -->
     <div class="detail-overlay" id="horarios-overlay" role="dialog" aria-modal="true">
@@ -2751,9 +2621,7 @@
         let allReservas = [];   // todas las del mes cargado
         let selectedDate = null; // 'YYYY-MM-DD'
         let currentReserva = null; // turno abierto en modal
-        let allBloques = [];       // bloqueos del mes cargado
         let allHorarios = {};      // horarios por día { dia_semana: ['HH:MM',...] }
-        let blFechaPickerInstance = null; // flatpickr del modal bloqueos
         let currentProfile = null; // perfil completo del usuario logueado
 
         // Estado para centros
@@ -2792,32 +2660,7 @@
             }
         }
 
-        // ==========================================================
-        // FETCH BLOQUEOS
-        // ==========================================================
-        async function fetchBloques() {
-            const firstDay = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-01`;
-            const lastDay = new Date(currentYear, currentMonth + 1, 0);
-            const lastDayStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(lastDay.getDate()).padStart(2, '0')}`;
 
-            let query = db
-                .from('aabloques')
-                .select('*')
-                .gte('fecha', firstDay)
-                .lte('fecha', lastDayStr)
-                .order('fecha', { ascending: true })
-                .order('hora', { ascending: true });
-
-            if (IS_CENTRO) {
-                const ids = filtroEmpresaActiva ? [filtroEmpresaActiva] : EMPRESAS_IDS;
-                query = query.in('empresa_id', ids);
-            } else {
-                query = query.eq('empresa_id', EMPRESA_ID);
-            }
-
-            const { data, error } = await query;
-            if (!error) allBloques = data || [];
-        }
 
         // ==========================================================
         // FETCH RESERVAS DEL MES ACTUAL
@@ -2851,7 +2694,6 @@
             }
             allReservas = data || [];
             await fetchHorarios();
-            await fetchBloques();
             renderCalendar();
             if (isAgendaView) renderAgenda();
             updateStats();
@@ -2946,12 +2788,9 @@
                 const isSelected = selectedDate === dateStr;
                 const dayReservas = reservasByDay[dateStr] || [];
 
-                // Verificar si el día completo está bloqueado
-                const isDayBlocked = allBloques.some(b => b.fecha === dateStr && !b.hora);
-                cell.className = `cal-day${isToday ? ' today' : ''}${isSelected ? ' selected' : ''}${dayReservas.length ? ' has-events' : ''}${isDayBlocked ? ' blocked' : ''}`;
+                cell.className = `cal-day${isToday ? ' today' : ''}${isSelected ? ' selected' : ''}${dayReservas.length ? ' has-events' : ''}`;
                 cell.innerHTML = `
           <div class="day-num">${d}</div>
-          ${isDayBlocked ? '<div class="blocked-icon">🚫</div>' : ''}
           <div class="day-dots">
             ${dayReservas.slice(0, 4).map(r =>
                     `<div class="dot ${(r.estado || '').toLowerCase()}"></div>`
@@ -3247,17 +3086,7 @@
                 // ocupadas en CUALQUIERA de las fechas seleccionadas
                 const occupiedTimes = data.map(res => res.hora_reserva.substring(0, 5));
 
-                // También filtrar horas bloqueadas para esas fechas
-                const blockedTimes = allBloques
-                    .filter(b => datesStrs.includes(b.fecha) && b.hora)
-                    .map(b => b.hora.substring(0, 5));
-                // Fechas completamente bloqueadas
-                const fullyBlocked = datesStrs.some(ds => allBloques.some(b => b.fecha === ds && !b.hora));
-                if (fullyBlocked) {
-                    horaSelect.innerHTML = '<option value="">Día bloqueado — sin turnos disponibles</option>';
-                    return;
-                }
-                const availableSlots = commonSlots.filter(s => !occupiedTimes.includes(s) && !blockedTimes.includes(s));
+                const availableSlots = commonSlots.filter(s => !occupiedTimes.includes(s));
 
                 if (availableSlots.length === 0) {
                     horaSelect.innerHTML = '<option value="">Sin horarios comunes libres</option>';
@@ -3558,7 +3387,6 @@
                 rolBadge.className = 'rol-badge centro';
                 rolBadge.style.display = '';
                 // Ocultar botones de acción para centro (solo lectura)
-                document.getElementById('btn-bloqueos').style.display = 'none';
                 document.getElementById('btn-horarios').style.display = 'none';
                 const addBtn = document.querySelector('.btn-add-turno');
                 if (addBtn) addBtn.style.display = 'none';
@@ -3566,7 +3394,6 @@
                 rolBadge.textContent = 'Profesional';
                 rolBadge.className = 'rol-badge psicologo';
                 rolBadge.style.display = '';
-                document.getElementById('btn-bloqueos').style.display = '';
                 document.getElementById('btn-horarios').style.display = '';
                 const addBtn = document.querySelector('.btn-add-turno');
                 if (addBtn) addBtn.style.display = '';
@@ -3649,7 +3476,6 @@
             await db.auth.signOut();
             // Resetear todo el estado
             allReservas = [];
-            allBloques = [];
             allHorarios = {};
             selectedDate = null;
             EMPRESA_ID = null;
@@ -3669,161 +3495,7 @@
             document.getElementById('login-error').classList.remove('show');
         });
 
-        // ==========================================================
-        // BLOQUEOS — Modal CRUD
-        // ==========================================================
-        // Slots de horas disponibles para bloquear
-        const BL_HORAS = null; // ya no se usa; se calculan dinámicamente
 
-        function buildHorasGrid() {
-            const grid = document.getElementById('bl-horas-grid');
-            const slots = getProfileSlots();
-            grid.innerHTML = slots.map(h =>
-                `<label class="hora-check-label" id="lbl-${h.replace(':','')}"> 
-                    <input type="checkbox" class="bl-hora-cb" value="${h}">
-                    ${h}
-                </label>`
-            ).join('');
-            grid.querySelectorAll('.bl-hora-cb').forEach(cb => {
-                cb.addEventListener('change', () => {
-                    cb.closest('label').classList.toggle('checked', cb.checked);
-                });
-            });
-        }
-
-        function toggleTodasHoras(check) {
-            document.querySelectorAll('.bl-hora-cb').forEach(cb => {
-                cb.checked = check;
-                cb.closest('label').classList.toggle('checked', check);
-            });
-        }
-
-        function toggleBloqueoCampos() {
-            const tipo = document.getElementById('bl-tipo').value;
-            const horaWrap = document.getElementById('bl-hora-wrap');
-            horaWrap.style.display = tipo === 'hora_especifica' ? '' : 'none';
-        }
-
-        function openBloqueosModal() {
-            document.getElementById('bloqueos-overlay').classList.add('is-open');
-            document.body.style.overflow = 'hidden';
-            document.getElementById('bloqueo-form').reset();
-            toggleBloqueoCampos();
-            buildHorasGrid();
-            renderBloqueosListUI();
-
-            if (!blFechaPickerInstance) {
-                blFechaPickerInstance = flatpickr('#bl-fecha', {
-                    mode: 'multiple',
-                    dateFormat: 'Y-m-d',
-                    locale: 'es',
-                    minDate: 'today',
-                    conjunction: ', '
-                });
-            } else {
-                blFechaPickerInstance.clear();
-            }
-        }
-
-        function closeBloqueosModal() {
-            document.getElementById('bloqueos-overlay').classList.remove('is-open');
-            document.body.style.overflow = '';
-        }
-
-        document.getElementById('bloqueos-close').addEventListener('click', closeBloqueosModal);
-        document.getElementById('bloqueos-overlay').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('bloqueos-overlay')) closeBloqueosModal();
-        });
-
-        async function renderBloqueosListUI() {
-            const listEl = document.getElementById('bloqueos-list');
-            listEl.innerHTML = '<div class="bloqueos-empty">Cargando...</div>';
-
-            const { data, error } = await db
-                .from('aabloques')
-                .select('*')
-                .eq('empresa_id', EMPRESA_ID)
-                .order('fecha', { ascending: true })
-                .order('hora', { ascending: true, nullsFirst: true });
-
-            if (error || !data || data.length === 0) {
-                listEl.innerHTML = '<div class="bloqueos-empty">No hay bloqueos activos</div>';
-                return;
-            }
-
-            listEl.innerHTML = data.map(b => {
-                const tipoLabel = b.hora ? `⏰ ${b.fecha} — ${b.hora.substring(0,5)} hs` : `📅 ${b.fecha} — Día completo`;
-                const motivo = b.motivo ? b.motivo : 'Sin motivo';
-                return `<div class="bloqueo-item">
-                    <div class="bloqueo-info">
-                        <div class="bloqueo-label">${tipoLabel}</div>
-                        <div class="bloqueo-motivo">${motivo}</div>
-                    </div>
-                    <button class="btn-del-bloqueo" title="Eliminar bloqueo" onclick="eliminarBloqueo('${b.id}')">
-                        <i class="ph-bold ph-trash"></i>
-                    </button>
-                </div>`;
-            }).join('');
-        }
-
-        document.getElementById('bloqueo-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btn-guardar-bloqueo');
-            btn.disabled = true;
-
-            const tipo = document.getElementById('bl-tipo').value;
-            const fechasRaw = document.getElementById('bl-fecha').value; // "YYYY-MM-DD, YYYY-MM-DD"
-            const motivo = document.getElementById('bl-motivo').value.trim() || null;
-
-            const fechas = fechasRaw.split(',').map(f => f.trim()).filter(f => f);
-            if (fechas.length === 0) { showToast('Seleccioná al menos una fecha', 'error'); btn.disabled = false; return; }
-
-            let inserts = [];
-
-            if (tipo === 'dia_completo') {
-                // Un registro por fecha, sin hora
-                inserts = fechas.map(f => ({ empresa_id: EMPRESA_ID, fecha: f, hora: null, motivo, tipo }));
-            } else {
-                // Horas seleccionadas
-                const horasSeleccionadas = [...document.querySelectorAll('.bl-hora-cb:checked')].map(cb => cb.value);
-                if (horasSeleccionadas.length === 0) { showToast('Seleccioná al menos una hora', 'error'); btn.disabled = false; return; }
-                // Un registro por cada combinación fecha × hora
-                for (const f of fechas) {
-                    for (const h of horasSeleccionadas) {
-                        inserts.push({ empresa_id: EMPRESA_ID, fecha: f, hora: h + ':00', motivo, tipo });
-                    }
-                }
-            }
-
-            const { error } = await db.from('aabloques').insert(inserts);
-
-            if (error) {
-                showToast('Error al guardar bloqueo', 'error');
-            } else {
-                showToast(`${inserts.length} bloqueo(s) agregado(s)`, 'success');
-                document.getElementById('bloqueo-form').reset();
-                toggleBloqueoCampos();
-                buildHorasGrid();
-                if (blFechaPickerInstance) blFechaPickerInstance.clear();
-                await fetchBloques();
-                renderCalendar();
-                renderBloqueosListUI();
-            }
-            btn.disabled = false;
-        });
-
-
-        async function eliminarBloqueo(id) {
-            const { error } = await db.from('aabloques').delete().eq('id', id).eq('empresa_id', EMPRESA_ID);
-            if (error) {
-                showToast('Error al eliminar', 'error');
-            } else {
-                showToast('Bloqueo eliminado', 'success');
-                await fetchBloques();
-                renderCalendar();
-                renderBloqueosListUI();
-            }
-        }
 
         // ==========================================================
         // CONFIGURAR HORARIOS — Modal
@@ -3835,7 +3507,7 @@
             document.body.style.overflow = 'hidden';
             horariosConfigDia = null;
             updateDiaTabsState();
-            document.getElementById('horarios-config-grid').innerHTML = '<div class="bloqueos-empty">Seleccioná un día para ver sus horarios</div>';
+            document.getElementById('horarios-config-grid').innerHTML = '<div class="horarios-empty">Seleccioná un día para ver sus horarios</div>';
             document.getElementById('horarios-dia-nombre').textContent = 'Seleccioná un día';
             document.getElementById('horarios-dia-count').textContent = '';
         }
@@ -4169,18 +3841,15 @@
                 const isToday = d.getTime() === today.getTime();
                 const dayReservas = allReservas.filter(r => r.fecha_reserva === dateStr)
                     .sort((a, b) => a.hora_reserva.localeCompare(b.hora_reserva));
-                const isDayBlocked = allBloques.some(b => b.fecha === dateStr && !b.hora);
-
                 let headerClass = 'agenda-day-header';
                 if (isToday) headerClass += ' today-header';
-                else if (isDayBlocked) headerClass += ' blocked-header';
 
                 const countHtml = dayReservas.length > 0
                     ? `<span class="agenda-day-count">${dayReservas.length}</span>`
-                    : (isDayBlocked ? '<span style="font-size:0.8rem">🚫</span>' : '');
+                    : '';
 
                 const turnosHtml = dayReservas.length === 0
-                    ? `<div class="agenda-empty-day">${isDayBlocked ? 'Día bloqueado' : 'Sin turnos'}</div>`
+                    ? `<div class="agenda-empty-day">Sin turnos</div>`
                     : `<div class="agenda-turnos">${dayReservas.map(r => `
                         <div class="agenda-turno-row" data-id="${r.id}">
                             <div class="agenda-dot ${(r.estado || 'pendiente').toLowerCase()}"></div>
