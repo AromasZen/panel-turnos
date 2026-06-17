@@ -2493,6 +2493,10 @@
 
             <form id="add-form" style="display: flex; flex-direction: column; gap: 1rem;">
                 <div class="detail-grid" style="margin-bottom:0;">
+                    <div class="detail-field detail-field-full" id="add-profesional-wrap" style="display:none">
+                        <label class="field-label">Profesional *</label>
+                        <select id="add-profesional" class="detail-estado-select"></select>
+                    </div>
                     <div class="detail-field detail-field-full">
                         <label class="field-label">Nombre y Apellido *</label>
                         <input type="text" id="add-nombre" required class="detail-estado-select"
@@ -2566,6 +2570,11 @@
                     <div class="detail-sub">Seleccioná los horarios disponibles para cada día de la semana.</div>
                 </div>
             </div>
+            <div id="cfg-profesional-wrap" style="display:none; margin-bottom: 1rem;">
+                <label class="field-label" style="font-size: 0.72rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted);">Profesional</label>
+                <select id="cfg-profesional" class="detail-estado-select" style="margin-top: 0.3rem;">
+                </select>
+            </div>
             <div class="horarios-dias-tabs" id="horarios-dias-tabs">
                 <button type="button" class="horario-dia-tab" data-dia="1">Lun</button>
                 <button type="button" class="horario-dia-tab" data-dia="2">Mar</button>
@@ -2622,13 +2631,8 @@
         let selectedDate = null; // 'YYYY-MM-DD'
         let currentReserva = null; // turno abierto en modal
         let allHorarios = {};      // horarios por día { dia_semana: ['HH:MM',...] }
+        let allHorariosByProf = {};
         let currentProfile = null; // perfil completo del usuario logueado
-
-        // Estado para centros
-        let IS_CENTRO = false;              // true si el usuario es un centro
-        let EMPRESAS_IDS = [];              // [empresa_id] para psicólogo, [emp1,emp2,...] para centro
-        let profesionalesCentro = [];       // [{empresa_id, nombre_display, id}] — solo centros
-        let filtroEmpresaActiva = null;     // null=todos, 'emp_id'=filtrado — solo centros
 
         let isAgendaView = false;
         let agendaWeekStart = getWeekStart(new Date());
@@ -2652,15 +2656,20 @@
             const { data, error } = await query;
             if (!error) {
                 allHorarios = {};
+                allHorariosByProf = {};
                 (data || []).forEach(row => {
                     const d = row.dia_semana;
+                    const e = row.empresa_id;
                     if (!allHorarios[d]) allHorarios[d] = [];
-                    allHorarios[d].push(row.hora.substring(0, 5));
+                    if (!allHorarios[d].includes(row.hora.substring(0, 5))) {
+                        allHorarios[d].push(row.hora.substring(0, 5));
+                    }
+                    if (!allHorariosByProf[e]) allHorariosByProf[e] = {};
+                    if (!allHorariosByProf[e][d]) allHorariosByProf[e][d] = [];
+                    allHorariosByProf[e][d].push(row.hora.substring(0, 5));
                 });
             }
         }
-
-
 
         // ==========================================================
         // FETCH RESERVAS DEL MES ACTUAL
@@ -2892,19 +2901,13 @@
                 }
             }
 
-            // Centro: modo solo lectura
+            // Centro: modo solo lectura (eliminado)
             const readonlyNotice = document.getElementById('centro-readonly-notice');
             const actionsDiv = document.querySelector('.detail-actions');
             const estadoSelect = document.getElementById('det-estado-select');
-            if (IS_CENTRO) {
-                if (readonlyNotice) readonlyNotice.style.display = '';
-                if (actionsDiv) actionsDiv.style.display = 'none';
-                if (estadoSelect) estadoSelect.disabled = true;
-            } else {
-                if (readonlyNotice) readonlyNotice.style.display = 'none';
-                if (actionsDiv) actionsDiv.style.display = '';
-                if (estadoSelect) estadoSelect.disabled = false;
-            }
+            if (readonlyNotice) readonlyNotice.style.display = 'none';
+            if (actionsDiv) actionsDiv.style.display = '';
+            if (estadoSelect) estadoSelect.disabled = false;
 
             // Mensaje
             const msgWrap = document.getElementById('det-mensaje-wrap');
@@ -2920,13 +2923,8 @@
             const notesTextarea = document.getElementById('det-notas');
             const saveNotesBtn = document.getElementById('btn-save-notas');
             if (notesTextarea) notesTextarea.value = r.notas_internas || '';
-            if (IS_CENTRO) {
-                if (notesTextarea) notesTextarea.disabled = true;
-                if (saveNotesBtn) saveNotesBtn.style.display = 'none';
-            } else {
-                if (notesTextarea) notesTextarea.disabled = false;
-                if (saveNotesBtn) saveNotesBtn.style.display = '';
-            }
+            if (notesTextarea) notesTextarea.disabled = false;
+            if (saveNotesBtn) saveNotesBtn.style.display = '';
 
             // WhatsApp link
             const tel = (r.telefono_cliente || '').replace(/\D/g, '');
@@ -2964,7 +2962,7 @@
                 .from('aareservas')
                 .update({ estado: nuevoEstado })
                 .eq('id', currentReserva.id)
-                .eq('empresa_id', EMPRESA_ID);
+                .eq('empresa_id', currentReserva.empresa_id);
 
             if (error) {
                 showToast('Error al actualizar estado', 'error');
@@ -2999,14 +2997,24 @@
         });
 
         // ==========================================================
-        // AGREGAR TURNO
+        // AGREGAR TURNO MANUAL
         // ==========================================================
-        let datePickerInstance = null;
-
         function openAddModal() {
             document.getElementById('add-form').reset();
             document.getElementById('add-overlay').classList.add('is-open');
             document.body.style.overflow = 'hidden';
+
+            const profWrap = document.getElementById('add-profesional-wrap');
+            const profSelect = document.getElementById('add-profesional');
+            if (IS_CENTRO) {
+                profWrap.style.display = '';
+                profSelect.required = true;
+                profSelect.innerHTML = '<option value="">Seleccionar profesional...</option>' + 
+                    profesionalesCentro.map(p => `<option value="${p.empresa_id}">${p.nombre_display}</option>`).join('');
+            } else {
+                profWrap.style.display = 'none';
+                profSelect.required = false;
+            }
 
             if (!datePickerInstance) {
                 datePickerInstance = flatpickr("#add-fechas", {
@@ -3027,9 +3035,17 @@
 
         async function updateAddHoraOptions(selectedDates) {
             const horaSelect = document.getElementById('add-hora');
+            
+            const targetEmpresaId = IS_CENTRO ? document.getElementById('add-profesional').value : EMPRESA_ID;
 
             if (selectedDates.length === 0) {
                 horaSelect.innerHTML = '<option value="">Primero selecciona fecha(s)</option>';
+                horaSelect.disabled = true;
+                return;
+            }
+
+            if (IS_CENTRO && !targetEmpresaId) {
+                horaSelect.innerHTML = '<option value="">Primero selecciona el profesional</option>';
                 horaSelect.disabled = true;
                 return;
             }
@@ -3043,7 +3059,7 @@
 
             for (let date of selectedDates) {
                 const day = date.getDay();
-                const daySlots = getProfileSlots(day);
+                const daySlots = getProfileSlots(day, targetEmpresaId);
 
                 if (daySlots.length === 0) {
                     Swal.fire({
@@ -3077,7 +3093,7 @@
                 const { data, error } = await db
                     .from('aareservas')
                     .select('hora_reserva')
-                    .eq('empresa_id', EMPRESA_ID)
+                    .eq('empresa_id', targetEmpresaId)
                     .in('fecha_reserva', datesStrs)
                     .neq('estado', 'Cancelado');
 
@@ -3101,6 +3117,12 @@
                 Swal.fire('Error', 'Hubo un error verificando disponibilidad.', 'error');
             }
         }
+
+        document.getElementById('add-profesional')?.addEventListener('change', () => {
+            if (datePickerInstance && datePickerInstance.selectedDates) {
+                updateAddHoraOptions(datePickerInstance.selectedDates);
+            }
+        });
 
         function closeAddModal() {
             document.getElementById('add-overlay').classList.remove('is-open');
@@ -3137,9 +3159,11 @@
                 return;
             }
 
+            const targetEmpresaId = IS_CENTRO ? document.getElementById('add-profesional').value : EMPRESA_ID;
+
             // Preparar el array de inserciones
             const inserts = fechas.map(f => ({
-                empresa_id: EMPRESA_ID,
+                empresa_id: targetEmpresaId,
                 nombre_cliente: nombre,
                 telefono_cliente: tel,
                 email_cliente: email,
@@ -3159,7 +3183,7 @@
             } else {
                 showToast(`Se crearon ${fechas.length} turno(s) correctamente`, 'success');
                 closeAddModal();
-                fetchReservas(); // Refrescar vista
+                fetchReservas(); // Recargar agenda
             }
 
             submitBtn.disabled = false;
@@ -3188,7 +3212,7 @@
                     .from('aareservas')
                     .delete()
                     .eq('id', currentReserva.id)
-                    .eq('empresa_id', EMPRESA_ID)
+                    .eq('empresa_id', currentReserva.empresa_id)
                     .select();
 
                 if (error) {
@@ -3241,15 +3265,19 @@
          * Si se pasa dayOfWeek (0-6), devuelve solo los de ese día.
          * Sin parámetro, devuelve todos los slots únicos de todos los días.
          */
-        function getProfileSlots(dayOfWeek) {
-            if (allHorarios && typeof allHorarios === 'object' && Object.keys(allHorarios).length > 0) {
+        function getProfileSlots(dayOfWeek, targetEmpresaId = null) {
+            const h = targetEmpresaId && allHorariosByProf && allHorariosByProf[targetEmpresaId] 
+                        ? allHorariosByProf[targetEmpresaId] 
+                        : allHorarios;
+            
+            if (h && typeof h === 'object' && Object.keys(h).length > 0) {
                 if (typeof dayOfWeek === 'number') {
-                    return (allHorarios[dayOfWeek] || []).slice().sort();
+                    return (h[dayOfWeek] || []).slice().sort();
                 }
                 // Sin día: devolver todos los slots únicos
                 const all = new Set();
-                Object.values(allHorarios).forEach(slots => {
-                    if (Array.isArray(slots)) slots.forEach(h => all.add(h));
+                Object.values(h).forEach(slots => {
+                    if (Array.isArray(slots)) slots.forEach(slot => all.add(slot));
                 });
                 if (all.size > 0) return [...all].sort();
             }
@@ -3386,10 +3414,9 @@
                 rolBadge.textContent = 'Centro';
                 rolBadge.className = 'rol-badge centro';
                 rolBadge.style.display = '';
-                // Ocultar botones de acción para centro (solo lectura)
-                document.getElementById('btn-horarios').style.display = 'none';
+                document.getElementById('btn-horarios').style.display = '';
                 const addBtn = document.querySelector('.btn-add-turno');
-                if (addBtn) addBtn.style.display = 'none';
+                if (addBtn) addBtn.style.display = '';
             } else {
                 rolBadge.textContent = 'Profesional';
                 rolBadge.className = 'rol-badge psicologo';
@@ -3501,16 +3528,50 @@
         // CONFIGURAR HORARIOS — Modal
         // ==========================================================
         let horariosConfigDia = null;
+        let horariosTargetEmpresaId = null;
 
         function openHorariosModal() {
             document.getElementById('horarios-overlay').classList.add('is-open');
             document.body.style.overflow = 'hidden';
             horariosConfigDia = null;
+
+            const profWrap = document.getElementById('cfg-profesional-wrap');
+            const profSelect = document.getElementById('cfg-profesional');
+            if (IS_CENTRO) {
+                profWrap.style.display = '';
+                profSelect.innerHTML = '<option value="">Seleccionar profesional...</option>' + 
+                    profesionalesCentro.map(p => `<option value="${p.empresa_id}">${p.nombre_display}</option>`).join('');
+                horariosTargetEmpresaId = null;
+                document.getElementById('horarios-dias-tabs').style.pointerEvents = 'none';
+                document.getElementById('horarios-dias-tabs').style.opacity = '0.5';
+            } else {
+                profWrap.style.display = 'none';
+                horariosTargetEmpresaId = EMPRESA_ID;
+                document.getElementById('horarios-dias-tabs').style.pointerEvents = 'auto';
+                document.getElementById('horarios-dias-tabs').style.opacity = '1';
+            }
+
             updateDiaTabsState();
             document.getElementById('horarios-config-grid').innerHTML = '<div class="horarios-empty">Seleccioná un día para ver sus horarios</div>';
             document.getElementById('horarios-dia-nombre').textContent = 'Seleccioná un día';
             document.getElementById('horarios-dia-count').textContent = '';
         }
+
+        document.getElementById('cfg-profesional')?.addEventListener('change', (e) => {
+            horariosTargetEmpresaId = e.target.value;
+            if (horariosTargetEmpresaId) {
+                document.getElementById('horarios-dias-tabs').style.pointerEvents = 'auto';
+                document.getElementById('horarios-dias-tabs').style.opacity = '1';
+                updateDiaTabsState();
+                if (horariosConfigDia !== null) renderHorariosConfigGrid();
+            } else {
+                document.getElementById('horarios-dias-tabs').style.pointerEvents = 'none';
+                document.getElementById('horarios-dias-tabs').style.opacity = '0.5';
+                document.getElementById('horarios-config-grid').innerHTML = '<div class="horarios-empty">Seleccioná un profesional</div>';
+                document.getElementById('horarios-dia-nombre').textContent = 'Seleccioná un día';
+                document.getElementById('horarios-dia-count').textContent = '';
+            }
+        });
 
         function closeHorariosModal() {
             document.getElementById('horarios-overlay').classList.remove('is-open');
@@ -3534,7 +3595,10 @@
         function updateDiaTabsState() {
             document.querySelectorAll('.horario-dia-tab').forEach(tab => {
                 const dia = parseInt(tab.dataset.dia);
-                const hasSlots = allHorarios[dia] && allHorarios[dia].length > 0;
+                const h = horariosTargetEmpresaId && allHorariosByProf && allHorariosByProf[horariosTargetEmpresaId]
+                    ? allHorariosByProf[horariosTargetEmpresaId]
+                    : allHorarios;
+                const hasSlots = h[dia] && h[dia].length > 0;
                 tab.classList.toggle('has-slots', hasSlots);
                 tab.classList.remove('active');
             });
@@ -3551,7 +3615,10 @@
                     allSlots.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
                 }
             }
-            const currentSlots = allHorarios[horariosConfigDia] || [];
+            const h = horariosTargetEmpresaId && allHorariosByProf && allHorariosByProf[horariosTargetEmpresaId]
+                ? allHorariosByProf[horariosTargetEmpresaId]
+                : allHorarios;
+            const currentSlots = h[horariosConfigDia] || [];
             grid.innerHTML = allSlots.map(slot => {
                 const isChecked = currentSlots.includes(slot);
                 return `<label class="hora-check-label${isChecked ? ' checked' : ''}">
@@ -3582,6 +3649,7 @@
         }
 
         async function guardarHorariosDelDia() {
+            if (!horariosTargetEmpresaId) { showToast('Seleccioná un profesional primero', 'error'); return; }
             if (horariosConfigDia === null) { showToast('Seleccioná un día primero', 'error'); return; }
             const btn = document.getElementById('btn-guardar-horarios');
             btn.disabled = true;
@@ -3592,7 +3660,7 @@
             const { error: delError } = await db
                 .from('aahorarios_dia')
                 .delete()
-                .eq('empresa_id', EMPRESA_ID)
+                .eq('empresa_id', horariosTargetEmpresaId)
                 .eq('dia_semana', horariosConfigDia);
 
             if (delError) {
@@ -3606,7 +3674,7 @@
             // 2. Insertar los nuevos
             if (horasSeleccionadas.length > 0) {
                 const inserts = horasSeleccionadas.map(h => ({
-                    empresa_id: EMPRESA_ID,
+                    empresa_id: horariosTargetEmpresaId,
                     dia_semana: horariosConfigDia,
                     hora: h + ':00'
                 }));
@@ -3633,9 +3701,13 @@
         }
 
         async function copiarHorariosAOtrosDias() {
+            if (!horariosTargetEmpresaId) { showToast('Seleccioná un profesional primero', 'error'); return; }
             if (horariosConfigDia === null) { showToast('Seleccioná un día primero', 'error'); return; }
             const diasNombres = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-            const currentSlots = allHorarios[horariosConfigDia] || [];
+            const h = horariosTargetEmpresaId && allHorariosByProf && allHorariosByProf[horariosTargetEmpresaId]
+                ? allHorariosByProf[horariosTargetEmpresaId]
+                : allHorarios;
+            const currentSlots = h[horariosConfigDia] || [];
             if (currentSlots.length === 0) { showToast('Este día no tiene horarios para copiar', 'error'); return; }
             const otrosDias = [0,1,2,3,4,5,6].filter(d => d !== horariosConfigDia);
             const checkboxesHtml = otrosDias.map(d =>
@@ -3662,8 +3734,8 @@
             if (!result.isConfirmed) return;
             const diasDestino = result.value;
             for (const dia of diasDestino) {
-                await db.from('aahorarios_dia').delete().eq('empresa_id', EMPRESA_ID).eq('dia_semana', dia);
-                const inserts = currentSlots.map(h => ({ empresa_id: EMPRESA_ID, dia_semana: dia, hora: h + ':00' }));
+                await db.from('aahorarios_dia').delete().eq('empresa_id', horariosTargetEmpresaId).eq('dia_semana', dia);
+                const inserts = currentSlots.map(h => ({ empresa_id: horariosTargetEmpresaId, dia_semana: dia, hora: h + ':00' }));
                 await db.from('aahorarios_dia').insert(inserts);
             }
             await fetchHorarios();
