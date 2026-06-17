@@ -2929,7 +2929,7 @@
             // WhatsApp link
             const tel = (r.telefono_cliente || '').replace(/\D/g, '');
             const mensaje = encodeURIComponent(
-                `Hola ${r.nombre_cliente}! 👋 Te contactamos desde para confirmar tu turno de *${r.servicio}* el *${formatFechaLarga(r.fecha_reserva)}* a las *${formatHora(r.hora_reserva)}*. ¿Podés confirmarlo?`
+                `Hola ${r.nombre_cliente}! Te contactamos para confirmar tu turno de *${r.servicio}* el *${formatFechaLarga(r.fecha_reserva)}* a las *${formatHora(r.hora_reserva)}*. ¿Podés confirmarlo?`
             );
             document.getElementById('btn-wa').href = `https://wa.me/${tel}?text=${mensaje}`;
 
