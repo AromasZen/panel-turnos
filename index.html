@@ -1016,7 +1016,12 @@
             z-index: 100000 !important;
         }
 
-        .horarios-empty { text-align:center; color: var(--text-muted); font-size:0.88rem; padding: 1rem; }
+        .horarios-empty {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            padding: 1rem;
+        }
 
         /* Grid de checkboxes de horas */
         .horas-grid {
@@ -1030,6 +1035,7 @@
             border-radius: 10px;
             background: #f8fafc;
         }
+
         .hora-check-label {
             display: flex;
             align-items: center;
@@ -1042,9 +1048,24 @@
             transition: background 0.15s;
             user-select: none;
         }
-        .hora-check-label:hover { background: #EBF4FF; }
-        .hora-check-label input[type=checkbox] { accent-color: var(--primary); width:14px; height:14px; cursor:pointer; }
-        .hora-check-label.checked { background: #EBF4FF; color: var(--primary); font-weight: 600; }
+
+        .hora-check-label:hover {
+            background: #EBF4FF;
+        }
+
+        .hora-check-label input[type=checkbox] {
+            accent-color: var(--primary);
+            width: 14px;
+            height: 14px;
+            cursor: pointer;
+        }
+
+        .hora-check-label.checked {
+            background: #EBF4FF;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
         .bl-select-all {
             font-size: 0.75rem;
             color: var(--primary);
@@ -1338,6 +1359,7 @@
                     opacity: 0;
                     transform: translateY(-10px);
                 }
+
                 to {
                     opacity: 1;
                     transform: translateY(0);
@@ -1392,14 +1414,17 @@
                 background: #D1FAE5 !important;
                 color: #059669 !important;
             }
+
             [data-theme="dark"] .header-actions.is-open .btn-horarios:hover {
                 background: #052E16 !important;
                 color: #6EE7B7 !important;
             }
+
             .header-actions.is-open #btn-logout:hover {
                 background: #FEE2E2 !important;
                 color: #DC2626 !important;
             }
+
             [data-theme="dark"] .header-actions.is-open #btn-logout:hover {
                 background: #450A0A !important;
                 color: #FCA5A5 !important;
@@ -1880,6 +1905,7 @@
                 opacity: 0;
                 transform: translateY(-6px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -2152,14 +2178,22 @@
             font-weight: 500;
             transition: var(--transition);
         }
-        .btn-horarios:hover { background: #D1FAE5; border-color: #059669; }
-        [data-theme="dark"] .btn-horarios:hover { background: #052E16; }
+
+        .btn-horarios:hover {
+            background: #D1FAE5;
+            border-color: #059669;
+        }
+
+        [data-theme="dark"] .btn-horarios:hover {
+            background: #052E16;
+        }
 
         .horarios-dias-tabs {
             display: flex;
             gap: 0.35rem;
             margin-bottom: 1rem;
         }
+
         .horario-dia-tab {
             flex: 1;
             min-width: 40px;
@@ -2175,23 +2209,69 @@
             transition: var(--transition);
             text-align: center;
         }
-        .horario-dia-tab:hover { border-color: var(--primary); color: var(--primary); background: var(--secondary); }
-        .horario-dia-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .horario-dia-tab.has-slots { border-color: rgba(5, 150, 105, 0.4); color: #059669; }
+
+        .horario-dia-tab:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--secondary);
+        }
+
+        .horario-dia-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .horario-dia-tab.has-slots {
+            border-color: rgba(5, 150, 105, 0.4);
+            color: #059669;
+        }
+
         .horario-dia-tab.has-slots::after {
-            content: ''; display: block; width: 5px; height: 5px;
-            border-radius: 50%; background: #059669; margin: 4px auto 0;
+            content: '';
+            display: block;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #059669;
+            margin: 4px auto 0;
         }
-        .horario-dia-tab.active::after { background: white; }
+
+        .horario-dia-tab.active::after {
+            background: white;
+        }
+
         .horarios-dia-info {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 0.75rem; padding: 0.5rem 0.75rem;
-            background: var(--secondary); border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            background: var(--secondary);
+            border-radius: 8px;
         }
-        #horarios-dia-nombre { font-weight: 700; font-family: 'Outfit', sans-serif; color: var(--primary); font-size: 0.95rem; }
-        #horarios-dia-count { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
-        .horarios-config-grid { max-height: 280px; grid-template-columns: repeat(4, 1fr); }
-        [data-theme="dark"] .horarios-dia-info { background: #1A2E4A; }
+
+        #horarios-dia-nombre {
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        #horarios-dia-count {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .horarios-config-grid {
+            max-height: 280px;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        [data-theme="dark"] .horarios-dia-info {
+            background: #1A2E4A;
+        }
     </style>
 </head>
 
@@ -2210,7 +2290,7 @@
             </div>
             <span class="rol-badge" id="rol-badge" style="display:none"></span>
             <span class="empresa-badge" id="empresa-label" style="display:none !important; visibility:hidden;"></span>
-            
+
             <button class="btn-hamburger" id="btn-hamburger" style="display:none" title="Menú">
                 <i class="ph-bold ph-list"></i>
             </button>
@@ -2220,15 +2300,18 @@
                     <i class="ph-bold ph-arrows-clockwise"></i> <span>Actualizar</span>
                 </button>
                 <button class="btn-vista" id="btn-vista" style="display:none" title="Cambiar vista">
-                    <i class="ph-bold ph-calendar-blank" id="btn-vista-icon"></i> <span id="btn-vista-label">Agenda</span>
+                    <i class="ph-bold ph-calendar-blank" id="btn-vista-icon"></i> <span
+                        id="btn-vista-label">Agenda</span>
                 </button>
                 <div class="export-wrap" id="export-wrap" style="display:none">
                     <button class="btn-export" id="btn-export" title="Exportar turnos">
                         <i class="ph-bold ph-export"></i> <span>Exportar</span>
                     </button>
                     <div class="export-dropdown" id="export-dropdown">
-                        <button class="export-opt" id="export-pdf"><i class="ph-bold ph-file-pdf"></i> Exportar PDF</button>
-                        <button class="export-opt" id="export-excel"><i class="ph-bold ph-file-xls"></i> Exportar Excel</button>
+                        <button class="export-opt" id="export-pdf"><i class="ph-bold ph-file-pdf"></i> Exportar
+                            PDF</button>
+                        <button class="export-opt" id="export-excel"><i class="ph-bold ph-file-xls"></i> Exportar
+                            Excel</button>
                     </div>
                 </div>
 
@@ -2338,7 +2421,8 @@
         </div>
 
         <!-- CENTRO: Stats por profesional (oculto por defecto) -->
-        <div id="stats-prof-container" style="display:none; padding: 0.75rem 2rem 0; max-width:1400px; margin:0 auto; width:100%;"></div>
+        <div id="stats-prof-container"
+            style="display:none; padding: 0.75rem 2rem 0; max-width:1400px; margin:0 auto; width:100%;"></div>
 
         <!-- MAIN -->
         <div class="main">
@@ -2411,15 +2495,18 @@
             <div class="detail-grid">
                 <div class="detail-field detail-field-full" id="det-profesional-wrap" style="display:none">
                     <div class="field-label">Profesional</div>
-                    <div class="field-value"><span class="detail-profesional-badge"><i class="ph-bold ph-user-circle"></i><span id="det-profesional">–</span></span></div>
+                    <div class="field-value"><span class="detail-profesional-badge"><i
+                                class="ph-bold ph-user-circle"></i><span id="det-profesional">–</span></span></div>
                 </div>
                 <div class="detail-field">
                     <div class="field-label">Fecha</div>
-                    <div class="field-value"><i class="ph-bold ph-calendar"></i><span id="det-fecha">–</span></div>
+                    <input type="date" class="detail-estado-select" id="det-edit-fecha" style="margin-top:0.3rem">
                 </div>
                 <div class="detail-field">
                     <div class="field-label">Hora</div>
-                    <div class="field-value"><i class="ph-bold ph-clock"></i><span id="det-hora">–</span></div>
+                    <select class="detail-estado-select" id="det-edit-hora" style="margin-top:0.3rem" disabled>
+                        <option value="">Cargando...</option>
+                    </select>
                 </div>
                 <div class="detail-field">
                     <div class="field-label">Teléfono</div>
@@ -2470,7 +2557,7 @@
                     <i class="ph-fill ph-whatsapp-logo"></i> Contactar por WhatsApp
                 </a>
                 <button class="btn-save-estado" id="btn-save-estado">
-                    <i class="ph-bold ph-floppy-disk"></i> Guardar estado
+                    <i class="ph-bold ph-floppy-disk"></i> Guardar cambios
                 </button>
                 <button class="btn-delete-estado" id="btn-delete-reserva">
                     <i class="ph-bold ph-trash"></i> Eliminar turno
@@ -2571,7 +2658,8 @@
                 </div>
             </div>
             <div id="cfg-profesional-wrap" style="display:none; margin-bottom: 1rem;">
-                <label class="field-label" style="font-size: 0.72rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted);">Profesional</label>
+                <label class="field-label"
+                    style="font-size: 0.72rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted);">Profesional</label>
                 <select id="cfg-profesional" class="detail-estado-select" style="margin-top: 0.3rem;">
                 </select>
             </div>
@@ -2590,16 +2678,20 @@
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.35rem;">
                 <div style="display:flex;gap:0.5rem;">
-                    <button type="button" class="bl-select-all" onclick="toggleTodasHorasConfig(true)">Seleccionar todos</button>
-                    <button type="button" class="bl-select-all" onclick="toggleTodasHorasConfig(false)">Deseleccionar todos</button>
+                    <button type="button" class="bl-select-all" onclick="toggleTodasHorasConfig(true)">Seleccionar
+                        todos</button>
+                    <button type="button" class="bl-select-all" onclick="toggleTodasHorasConfig(false)">Deseleccionar
+                        todos</button>
                 </div>
             </div>
             <div class="horas-grid horarios-config-grid" id="horarios-config-grid"></div>
             <div style="display:flex;gap:0.75rem;margin-top:1rem;">
-                <button type="button" class="btn-save-estado" style="background:var(--primary);color:white;flex:1;" id="btn-guardar-horarios" onclick="guardarHorariosDelDia()">
+                <button type="button" class="btn-save-estado" style="background:var(--primary);color:white;flex:1;"
+                    id="btn-guardar-horarios" onclick="guardarHorariosDelDia()">
                     <i class="ph-bold ph-floppy-disk"></i> Guardar horarios del día
                 </button>
-                <button type="button" class="btn-save-estado" style="flex:0 0 auto;" id="btn-copiar-horarios" onclick="copiarHorariosAOtrosDias()">
+                <button type="button" class="btn-save-estado" style="flex:0 0 auto;" id="btn-copiar-horarios"
+                    onclick="copiarHorariosAOtrosDias()">
                     <i class="ph-bold ph-copy"></i> Copiar a otros días
                 </button>
             </div>
@@ -2882,8 +2974,8 @@
             document.getElementById('det-avatar').textContent = initials;
             document.getElementById('det-nombre').textContent = r.nombre_cliente;
             document.getElementById('det-sub').textContent = `Reserva creada el ${formatFecha(r.created_at)}`;
-            document.getElementById('det-fecha').textContent = formatFechaLarga(r.fecha_reserva);
-            document.getElementById('det-hora').textContent = formatHora(r.hora_reserva);
+            document.getElementById('det-edit-fecha').value = r.fecha_reserva;
+            updateEditHoraOptions(r.fecha_reserva, r.hora_reserva ? r.hora_reserva.substring(0, 5) : '', r.empresa_id);
             document.getElementById('det-tel').textContent = r.telefono_cliente || '–';
             document.getElementById('det-email').textContent = r.email_cliente || '–';
             document.getElementById('det-servicio').textContent = r.servicio || '–';
@@ -2951,32 +3043,48 @@
             if (e.key === 'Escape') closeDetail();
         });
 
+        document.getElementById('det-edit-fecha').addEventListener('change', (e) => {
+            if (currentReserva) {
+                updateEditHoraOptions(e.target.value, null, currentReserva.empresa_id);
+            }
+        });
+
         // ==========================================================
         // GUARDAR ESTADO
         // ==========================================================
         document.getElementById('btn-save-estado').addEventListener('click', async () => {
             if (!currentReserva) return;
             const nuevoEstado = document.getElementById('det-estado-select').value;
+            const nuevaFecha = document.getElementById('det-edit-fecha').value;
+            const nuevaHora = document.getElementById('det-edit-hora').value;
 
             const { error } = await db
                 .from('aareservas')
-                .update({ estado: nuevoEstado })
+                .update({ 
+                    estado: nuevoEstado,
+                    fecha_reserva: nuevaFecha,
+                    hora_reserva: nuevaHora
+                })
                 .eq('id', currentReserva.id)
                 .eq('empresa_id', currentReserva.empresa_id);
 
             if (error) {
-                showToast('Error al actualizar estado', 'error');
+                showToast('Error al actualizar reserva', 'error');
                 return;
             }
 
             // Actualizar en memoria
             const idx = allReservas.findIndex(r => r.id === currentReserva.id);
-            if (idx !== -1) allReservas[idx].estado = nuevoEstado;
+            if (idx !== -1) {
+                allReservas[idx].estado = nuevoEstado;
+                allReservas[idx].fecha_reserva = nuevaFecha;
+                allReservas[idx].hora_reserva = nuevaHora;
+            }
 
             updateStats();
             if (selectedDate) renderTurnosList(selectedDate);
             renderCalendar();
-            showToast('Estado actualizado correctamente', 'success');
+            showToast('Reserva actualizada correctamente', 'success');
             closeDetail();
         });
 
@@ -3009,7 +3117,7 @@
             if (IS_CENTRO) {
                 profWrap.style.display = '';
                 profSelect.required = true;
-                profSelect.innerHTML = '<option value="">Seleccionar profesional...</option>' + 
+                profSelect.innerHTML = '<option value="">Seleccionar profesional...</option>' +
                     profesionalesCentro.map(p => `<option value="${p.empresa_id}">${p.nombre_display}</option>`).join('');
             } else {
                 profWrap.style.display = 'none';
@@ -3035,7 +3143,7 @@
 
         async function updateAddHoraOptions(selectedDates) {
             const horaSelect = document.getElementById('add-hora');
-            
+
             const targetEmpresaId = IS_CENTRO ? document.getElementById('add-profesional').value : EMPRESA_ID;
 
             if (selectedDates.length === 0) {
@@ -3055,7 +3163,7 @@
 
             let commonSlots = null;
             const datesStrs = [];
-            const _diasNombres = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+            const _diasNombres = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 
             for (let date of selectedDates) {
                 const day = date.getDay();
@@ -3109,6 +3217,71 @@
                 } else {
                     horaSelect.innerHTML = '<option value="">Seleccionar hora...</option>' +
                         availableSlots.map(s => `<option value="${s}">${s}</option>`).join('');
+                    horaSelect.disabled = false;
+                }
+            } catch (error) {
+                console.error(error);
+                horaSelect.innerHTML = '<option value="">Error cargando horarios</option>';
+                Swal.fire('Error', 'Hubo un error verificando disponibilidad.', 'error');
+            }
+        }
+
+        async function updateEditHoraOptions(dateStr, currentHora, targetEmpresaId) {
+            const horaSelect = document.getElementById('det-edit-hora');
+            
+            if (!dateStr) {
+                horaSelect.innerHTML = '<option value="">Selecciona fecha</option>';
+                horaSelect.disabled = true;
+                return;
+            }
+
+            horaSelect.innerHTML = '<option value="">Cargando horarios...</option>';
+            horaSelect.disabled = true;
+
+            const [year, month, dayObj] = dateStr.split('-');
+            const date = new Date(year, month - 1, dayObj);
+            const day = date.getDay();
+            const _diasNombres = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+
+            const daySlots = getProfileSlots(day, targetEmpresaId);
+
+            if (daySlots.length === 0) {
+                horaSelect.innerHTML = `<option value="">Sin horarios para ${_diasNombres[day]}</option>`;
+                return;
+            }
+
+            try {
+                const { data, error } = await db
+                    .from('aareservas')
+                    .select('hora_reserva')
+                    .eq('empresa_id', targetEmpresaId)
+                    .eq('fecha_reserva', dateStr)
+                    .neq('estado', 'Cancelado');
+
+                if (error) throw error;
+
+                const occupiedTimes = data.map(res => res.hora_reserva.substring(0, 5));
+                
+                if (currentHora && currentReserva && currentReserva.estado !== 'Cancelado' && currentReserva.fecha_reserva === dateStr) {
+                    const idx = occupiedTimes.indexOf(currentHora);
+                    if (idx !== -1) occupiedTimes.splice(idx, 1);
+                }
+
+                const availableSlots = daySlots.filter(s => !occupiedTimes.includes(s));
+
+                if (availableSlots.length === 0) {
+                    horaSelect.innerHTML = '<option value="">Sin horarios libres</option>';
+                } else {
+                    let optionsHTML = '<option value="">Seleccionar hora...</option>';
+                    if (currentHora && !availableSlots.includes(currentHora) && currentReserva.fecha_reserva === dateStr) {
+                        optionsHTML += `<option value="${currentHora}">${currentHora} (Hora actual)</option>`;
+                    }
+                    optionsHTML += availableSlots.map(s => `<option value="${s}">${s}</option>`).join('');
+                    horaSelect.innerHTML = optionsHTML;
+                    
+                    if (currentHora && currentReserva.fecha_reserva === dateStr) {
+                        horaSelect.value = currentHora;
+                    }
                     horaSelect.disabled = false;
                 }
             } catch (error) {
@@ -3266,10 +3439,10 @@
          * Sin parámetro, devuelve todos los slots únicos de todos los días.
          */
         function getProfileSlots(dayOfWeek, targetEmpresaId = null) {
-            const h = targetEmpresaId && allHorariosByProf && allHorariosByProf[targetEmpresaId] 
-                        ? allHorariosByProf[targetEmpresaId] 
-                        : allHorarios;
-            
+            const h = targetEmpresaId && allHorariosByProf && allHorariosByProf[targetEmpresaId]
+                ? allHorariosByProf[targetEmpresaId]
+                : allHorarios;
+
             if (h && typeof h === 'object' && Object.keys(h).length > 0) {
                 if (typeof dayOfWeek === 'number') {
                     return (h[dayOfWeek] || []).slice().sort();
@@ -3282,7 +3455,7 @@
                 if (all.size > 0) return [...all].sort();
             }
             // Fallback genérico
-            return ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00'];
+            return ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
         }
 
         function formatHora(hora) {
@@ -3337,7 +3510,7 @@
 
         async function showAppScreen(user) {
             // 1. Buscar el perfil en la tabla aaprofles para obtener el empresa_id
-             const { data: profile, error } = await db
+            const { data: profile, error } = await db
                 .from('aaprofles')
                 .select('*')
                 .eq('id', user.id)
@@ -3539,7 +3712,7 @@
             const profSelect = document.getElementById('cfg-profesional');
             if (IS_CENTRO) {
                 profWrap.style.display = '';
-                profSelect.innerHTML = '<option value="">Seleccionar profesional...</option>' + 
+                profSelect.innerHTML = '<option value="">Seleccionar profesional...</option>' +
                     profesionalesCentro.map(p => `<option value="${p.empresa_id}">${p.nombre_display}</option>`).join('');
                 horariosTargetEmpresaId = null;
                 document.getElementById('horarios-dias-tabs').style.pointerEvents = 'none';
@@ -3694,7 +3867,7 @@
             document.querySelectorAll('.horario-dia-tab').forEach(t => {
                 t.classList.toggle('active', parseInt(t.dataset.dia) === horariosConfigDia);
             });
-            const diasN = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+            const diasN = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
             showToast(`Horarios del ${diasN[horariosConfigDia]} guardados`, 'success');
             btn.disabled = false;
             btn.innerHTML = '<i class="ph-bold ph-floppy-disk"></i> Guardar horarios del día';
@@ -3709,7 +3882,7 @@
                 : allHorarios;
             const currentSlots = h[horariosConfigDia] || [];
             if (currentSlots.length === 0) { showToast('Este día no tiene horarios para copiar', 'error'); return; }
-            const otrosDias = [0,1,2,3,4,5,6].filter(d => d !== horariosConfigDia);
+            const otrosDias = [0, 1, 2, 3, 4, 5, 6].filter(d => d !== horariosConfigDia);
             const checkboxesHtml = otrosDias.map(d =>
                 `<label style="display:flex;align-items:center;gap:0.5rem;padding:0.3rem 0;cursor:pointer;">
                     <input type="checkbox" value="${d}" style="accent-color:#2C5282;width:16px;height:16px;cursor:pointer;">
