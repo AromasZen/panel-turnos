@@ -2725,6 +2725,11 @@
         let allHorarios = {};      // horarios por día { dia_semana: ['HH:MM',...] }
         let allHorariosByProf = {};
         let currentProfile = null; // perfil completo del usuario logueado
+        let datePickerInstance = null;
+        let IS_CENTRO = false;
+        let EMPRESAS_IDS = [];
+        let profesionalesCentro = [];
+        let filtroEmpresaActiva = null;
 
         let isAgendaView = false;
         let agendaWeekStart = getWeekStart(new Date());
